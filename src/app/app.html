@@ -1,0 +1,111 @@
+ <div class="cursor-follower"></div>
+    <div class="slider-drag-cursor"><i class="fas fa-angle-left me-2"></i> DRAG <i class="fas fa-angle-right ms-2"></i>
+    </div>
+   
+  
+    <div class="sidemenu-wrapper sidemenu-info" id="sidemenu">
+  <div class="sidemenu-content"><button class="closeButton sideMenuCls"><i class="far fa-times"></i></button>
+    <div class="widget">
+      <div class="th-widget-about">
+        <div class="about-logo"><img src="assets/img/logo2.png" alt="Tourm">
+        </div>
+        <p class="about-text">Somos una posada familiar en Capacho, estado Táchira, Venezuela, pensada para tu descanso
+          y disfrute. Contamos con hospedaje confortable, restaurante y piscina, en un entorno familiar donde el buen
+          servicio y la atención personalizada son nuestra prioridad.</p>
+
+        <div class="th-social"><a href="https://www.facebook.com/"><i class="fab fa-facebook-f"></i></a> <a
+            href="https://www.twitter.com/"><i class="fab fa-twitter"></i></a> <a href="https://www.linkedin.com/"><i
+              class="fab fa-linkedin-in"></i></a> <a href="https://www.whatsapp.com/"><i
+              class="fab fa-whatsapp"></i></a></div>
+      </div>
+    </div>
+    <div class="widget">
+      <h3 class="widget_title">Contacto</h3>
+      <div class="th-widget-contact">
+        <div class="info-box_text">
+          <div class="icon"><img src="assets/img/icon/phone.svg" alt="img"></div>
+          <div class="details">
+            <p><a href="tel:+584147015219" class="info-box_link">+58 0414 701-5219</a></p>
+          </div>
+        </div>
+        <div class="info-box_text">
+          <div class="icon"><img src="assets/img/icon/envelope.svg" alt="img"></div>
+          <div class="details">
+            <p><a href="mailto:lamolineraposada@gmail.com" class="info-box_link">lamolineraposada@gmail.com</a></p>
+          </div>
+        </div>
+        <div class="info-box_text">
+          <div class="icon"><img src="assets/img/icon/location-dot.svg" alt="img"></div>
+          <div class="details">
+            <p>Capacho, estado Táchira, Venezuela</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <app-header></app-header>
+    
+    <router-outlet></router-outlet>
+   <app-footer></app-footer>
+   
+    <div class="scroll-top"><svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+            <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"
+                style="transition: stroke-dashoffset 10ms linear 0s; stroke-dasharray: 307.919, 307.919; stroke-dashoffset: 307.919;">
+            </path>
+        </svg></div>
+    <div id="login-form" class="popup-login-register mfp-hide">
+        <ul class="nav" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation"><button class="nav-menu" id="pills-home-tab" data-bs-toggle="pill"
+                    data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home"
+                    aria-selected="false">Login</button></li>
+            <li class="nav-item" role="presentation"><button class="nav-menu active" id="pills-profile-tab"
+                    data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab"
+                    aria-controls="pills-profile" aria-selected="true">Register</button></li>
+        </ul>
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                <h3 class="box-title mb-30">Sign in to your account</h3>
+                <div class="th-login-form">
+                    <form action="https://html.themehour.net/tourm/demo/mail.php" method="POST"
+                        class="login-form ajax-contact">
+                        <div class="row">
+                            <div class="form-group col-12"><label>Username or email</label> <input type="text"
+                                    class="form-control" name="email" id="email" required="required"></div>
+                            <div class="form-group col-12"><label>Password</label> <input type="password"
+                                    class="form-control" name="pasword" id="pasword" required="required"></div>
+                            <div class="form-btn mb-20 col-12"><button class="th-btn btn-fw th-radius2">Send
+                                    Message</button></div>
+                        </div>
+                        <div id="forgot_url"><a href="my-account.html">Forgot password?</a></div>
+                        <p class="form-messages mb-0 mt-3"></p>
+                    </form>
+                </div>
+            </div>
+            <div class="tab-pane fade active show" id="pills-profile" role="tabpanel"
+                aria-labelledby="pills-profile-tab">
+                <h3 class="th-form-title mb-30">Sign in to your account</h3>
+                <form action="https://html.themehour.net/tourm/demo/mail.php" method="POST"
+                    class="login-form ajax-contact">
+                    <div class="row">
+                        <div class="form-group col-12"><label>Username*</label> <input type="text" class="form-control"
+                                name="usename" id="usename" required="required"></div>
+                        <div class="form-group col-12"><label>First name*</label> <input type="text"
+                                class="form-control" name="firstname" id="firstname" required="required"></div>
+                        <div class="form-group col-12"><label>Last name*</label> <input type="text" class="form-control"
+                                name="lastname" id="lastname" required="required"></div>
+                        <div class="form-group col-12"><label for="new_email">Your email*</label> <input type="text"
+                                class="form-control" name="new_email" id="new_email" required="required"></div>
+                        <div class="form-group col-12"><label for="new_email_confirm">Confirm email*</label> <input
+                                type="text" class="form-control" name="new_email_confirm" id="new_email_confirm"
+                                required="required"></div>
+                        <div class="statement"><span class="register-notes">A password will be emailed to you.</span>
+                        </div>
+                        <div class="form-btn mt-20 col-12"><button class="th-btn btn-fw th-radius2">Sign up</button>
+                        </div>
+                    </div>
+                    <p class="form-messages mb-0 mt-3"></p>
+                </form>
+            </div>
+        </div>
+    </div>
