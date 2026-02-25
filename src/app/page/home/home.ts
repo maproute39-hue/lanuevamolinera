@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { LoadStyleService } from '../../services/load-style.service';
 import { ScriptLoaderService } from '../../services/script-loader.service';
-import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs';
+import { Habitacion } from '../../models/habitacion.model';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
+import { RealtimeHabitacionesService } from '../../services/habitaciones-realtime.service';
 // Add these type declarations
 declare global {
   interface Window {
@@ -24,14 +27,30 @@ declare global {
   styleUrl: './home.scss',
 })
 export class Home implements OnInit {
+  isBrowser: boolean = false;
+
+  habitaciones$!: Observable<Habitacion[]>;
+
   constructor(
     private loadStyle: LoadStyleService,
     private scriptLoader: ScriptLoaderService,
-    private router: Router
-  ) {}
+    private router: Router,
+    public RealtimeHabitacionesService: RealtimeHabitacionesService,
+    @Inject(PLATFORM_ID) private platformId: Object
+
+  ) {
+    this.habitaciones$ = this.RealtimeHabitacionesService.habitaciones$;
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   async ngOnInit(): Promise<void> {
     await this.loadAssets();
+    this.RealtimeHabitacionesService.habitaciones$.subscribe((habitaciones) => {
+      console.log(habitaciones);
+    });
+     if (!this.isBrowser) return;
+
+      window.scrollTo(0, 0);
   }
 
   private async loadAssets(): Promise<void> {
@@ -107,4 +126,7 @@ export class Home implements OnInit {
     }
   }
 
+  viewHabitacion(id: string) {
+    this.router.navigate(['/room-details', id]);
+  }
 }

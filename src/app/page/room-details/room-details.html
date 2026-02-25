@@ -1,10 +1,10 @@
 <div class="breadcumb-wrapper" data-bg-src="assets/img/bg/breadcumb-bg.jpg">
         <div class="container">
             <div class="breadcumb-content">
-                <h1 class="breadcumb-title">Resort Details</h1>
+                <h1 class="breadcumb-title">Detalles de la Habitación</h1>
                 <ul class="breadcumb-menu">
-                    <li><a href="home-travel.html">Home</a></li>
-                    <li>Resort Details</li>
+                    <li><a routerLink="/home">Inicio</a></li>
+                    <li>Detalles de la Habitación</li>
                 </ul>
             </div>
         </div>
@@ -13,28 +13,14 @@
         <div class="container">
             <div class="row">
                 <div class="col-xxl-8 col-lg-7">
-                    <div class="page-single">
-                        <div class="service-img global-img"><img src="assets/img/normal/resort-details.jpg" alt="">
+                    <div class="page-single" *ngIf="habitacion$ | async as habitacion">
+                        <div class="service-img global-img"><img [src]="'https://db.buckapi.site:8091/api/files/habitaciones_molinera/' + habitacion.id + '/' + habitacion.img[0]" [alt]="habitacion.name">
                         </div>
                         <div class="page-content d-block">
-                            <h3 class="box-title mt-20"><a href="resort-details.html">Ocean View Resort</a></h3>
-                            <p class="blog-text mb-30">This luxury resort is set on a private island in the South
-                                Pacific. The overwater bungalows and beachfront villas offer stunning views of the
-                                turquoise lagoon and the surrounding mountains. Highlights: Snorkeling, spa treatments,
-                                and romantic dining experiences overlooking the ocean. This luxurious private island
-                                resort in Tetiaroa offers pristine beaches and a lagoon with incredible ocean views.
-                                It’s an eco-friendly resort focused on sustainability. Highlights: Snorkeling, kayaking,
-                                and luxurious spa treatments with an ocean backdrop.</p>
-                            <p class="blog-text mb-35">Ocean View Resort typically refers to a coastal resort that
-                                provides stunning views of the ocean from its accommodations and facilities. These
-                                resorts are often situated in prime locations along beaches, cliffs, or coastal areas,
-                                allowing guests to enjoy the natural beauty of the sea from their rooms, restaurants,
-                                pools, and other areas within the property.</p>
-                            <h4 class="">Children and extra beds.</h4>
-                            <p class="blog-text mb-35">Children are welcome Kids stay free! Children stay free when
-                                using existing bedding; children may not be eligible for complimentary breakfast
-                                Rollaway/extra beds are available for $ 10 per day.</p>
-                            <h2 class="box-title">Highlights</h2>
+                            <h3 class="box-title mt-20"><a > {{ habitacion.name }}</a></h3>
+                            <p class="blog-text mb-30">{{ habitacion.description }}</p>
+                           
+                            <h2 class="box-title">Servicios</h2>
                             <ul class="resort-grid-list">
                                 <li>
                                     <div class="resort-grid-list-icon"><img src="assets/img/icon/resort-icon1-1.svg"
@@ -109,7 +95,7 @@
                             </ul>
                         </div>
                         <div class="destination-gallery-wrapper">
-                            <h3 class="page-title mt-30 mb-30">From our gallery</h3>
+                            <h3 class="page-title mt-30 mb-30">Galeria</h3>
                             <div class="row gy-4 gallery-row filter-active">
                                 <div class="col-xxl-auto filter-item">
                                     <div class="gallery-box style3">
@@ -245,6 +231,7 @@
                 </div>
                 <div class="col-xxl-4 col-lg-5">
                     <aside class="sidebar-area style3">
+                         aqui va un formulario para reservar
                        
 <!--                         aqui va un formulario para reservar
  -->                    </aside>

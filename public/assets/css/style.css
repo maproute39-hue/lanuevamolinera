@@ -5,7 +5,7 @@
     --primary-color: #1CA8CB;
     --title-color: #65712f;
     --body-color: #6E7070;
-    --smoke-color: #E9F6F9;
+    --smoke-color: #dcbb8f5e;
     --smoke-color2: #F3F4F6;
     --black-color: #000000;
     --black-color2: #0D0D0C;
@@ -25056,7 +25056,7 @@ span.select2-selection.select2-selection--single:focus {
 
 .counter-card {
     position: relative;
-    background-color: #E9F6F9;
+    background-color: #dbba8f3b;
     padding: 93px 28px;
     width: 264px;
     height: 264px;
@@ -31540,7 +31540,7 @@ input.wp-block-button__link,
     text-align: center;
     display: block;
     margin: auto;
-    background: rgba(28, 168, 203, 0.1);
+    background: #F3F4F6;
     border-radius: 50px;
     margin-bottom: 24px
 }

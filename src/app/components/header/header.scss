@@ -1,0 +1,40 @@
+.popup-login-register {
+  display: none; /* Oculto por defecto */
+  position: fixed; /* Asegura que esté fijo en la pantalla */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999; /* Asegura que el modal esté por encima de otros elementos */
+}
+
+.popup-login-register.mfp-show {
+  display: block; /* Visible cuando se activa */
+}
+
+
+.popup-login-register .modal-content {
+  background: transparent;
+  color: #000;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 100%;
+  position: relative;
+  margin: 0 auto;
+  transform: translateY(-50%);
+  top: 50%;
+  overflow-y: auto; /* Permite desplazamiento si el contenido es largo */
+  max-height: 80vh; /* Limita la altura máxima */
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #000;
+}

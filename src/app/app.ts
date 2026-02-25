@@ -33,26 +33,26 @@ export class App {
 
     if (typeof document !== 'undefined') {
       this.scriptLoader
-        .loadScripts([
-          'assets/js/vendor/jquery-3.6.0.min.js',
-          'assets/js/swiper-bundle.min.js', 
-          /* 'assets/js/bootstrap.min.js',
-          'assets/js/jquery.magnific-popup.min.js',
-          'assets/js/jquery.counterup.min.js',
-          'assets/js/jquery-ui.min.js',
-          'assets/js/imagesloaded.pkgd.min.js',
-          'assets/js/isotope.pkgd.min.js',
-          'assets/js/gsap.min.js',
-          'assets/js/circle-progress.js',
-          'assets/js/matter.min.js',
-          'assets/js/matterjs-custom.js',
-          'assets/js/nice-select.min.js',
-          'assets/js/main.js', */
+        .loadAll([
+          {src: 'assets/js/vendor/jquery-3.6.0.min.js'},
+          {src: 'assets/js/swiper-bundle.min.js'}, 
+          /* {src: 'assets/js/bootstrap.min.js'},
+          {src: 'assets/js/jquery.magnific-popup.min.js'},
+          {src: 'assets/js/jquery.counterup.min.js'},
+          {src: 'assets/js/jquery-ui.min.js'},
+          {src: 'assets/js/imagesloaded.pkgd.min.js'},
+          {src: 'assets/js/isotope.pkgd.min.js'},
+          {src: 'assets/js/gsap.min.js'},
+          {src: 'assets/js/circle-progress.js'},
+          {src: 'assets/js/matter.min.js'},
+          {src: 'assets/js/matterjs-custom.js'},
+          {src: 'assets/js/nice-select.min.js'},
+          {src: 'assets/js/main.js'}, */
         ])
-        .then((data) => {
-          console.log('Todos los scripts se han cargado correctamente', data);
+        .then(() => {
+          console.log('Todos los scripts se han cargado correctamente');
         })
-        .catch((error) => console.error('Error al cargar los scripts', error));
+        .catch((error: any) => console.error('Error al cargar los scripts', error));
     }
 
   }
