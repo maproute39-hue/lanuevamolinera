@@ -4,6 +4,7 @@ import { About } from './page/about/about';
 import { Add } from './dashboard/add/add';
 import { Contact } from './page/contact/contact';
 import { Rooms } from './page/rooms/rooms';
+import { Services } from './page/services/services';
 export const routes: Routes = [
 
     {
@@ -25,7 +26,7 @@ export const routes: Routes = [
     path: 'room-details/:id',
     loadComponent: () =>
       import('./page/room-details/room-details').then(c => c.RoomDetails),
-    title: 'La Nueva Molinera',
+    title: 'Detalle de la habitacion',
     data: {
       description: 'La Nueva Molinera ',
       canonical: '/',
@@ -35,7 +36,7 @@ export const routes: Routes = [
     path: 'about',
     loadComponent: () =>
       import('./page/about/about').then(c => c.About),
-    title: 'La Nueva Molinera',
+    title: 'Quienes Somos',
     data: {
       description: 'La Nueva Molinera ',
       canonical: '/',
@@ -45,7 +46,7 @@ export const routes: Routes = [
     path: 'contact',
     loadComponent: () =>
       import('./page/contact/contact').then(c => c.Contact),
-    title: 'La Nueva Molinera',
+    title: 'Contacto',
     data: {
       description: 'La Nueva Molinera ',
       canonical: '/',
@@ -65,7 +66,17 @@ export const routes: Routes = [
     path: 'rooms',
     loadComponent: () =>
       import('./page/rooms/rooms').then(c => c.Rooms),
-    title: 'La Nueva Molinera',
+    title: 'Habitaciones',
+    data: {
+      description: 'La Nueva Molinera ',
+      canonical: '/',
+    },
+  },
+  {
+    path: 'services',
+    loadComponent: () =>
+      import('./page/services/services').then(c => c.Services),
+    title: 'Servicios',
     data: {
       description: 'La Nueva Molinera ',
       canonical: '/',
