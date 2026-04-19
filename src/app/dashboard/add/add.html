@@ -1,88 +1,186 @@
 <div class="space-extra2-top space-extra2-bottom" data-bg-src="assets/img/bg/video_bg_1.jpg">
   <div class="container">
     <div class="row flex-row-reverse justify-content-center align-items-center">
-     
       <div class="col-lg-12">
         <div>
-          <form class="contact-form style2 ajax-contact" (submit)="onSubmit($event)">
-            <h3 class="sec-title mb-30 text-capitalize">Agregar Habitación</h3>
+<form
+  *ngIf="!loading"
+  class="contact-form style2 ajax-contact"
+  (submit)="onSubmit($event)"
+>            <h3 class="sec-title mb-30 text-capitalize">
+              {{ isEditMode ? 'Editar Habitación' : 'Agregar Habitación' }}
+            </h3>
+
             <div class="row">
-              <!-- Campo de nombre -->
               <div class="col-12 form-group">
                 <label for="nombre">Nombre</label>
-                <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre" [(ngModel)]="formData.nombre" required>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="nombre"
+                  id="nombre"
+                  placeholder="Nombre"
+                  [(ngModel)]="formData.nombre"
+                  required
+                >
               </div>
 
-              <!-- Campo de descripción -->
               <div class="col-12 form-group">
                 <label for="descripcion">Descripción</label>
-                <textarea name="descripcion" id="descripcion" cols="30" rows="3" class="form-control" placeholder="Descripción" [(ngModel)]="formData.descripcion" required></textarea>
+                <textarea
+                  name="descripcion"
+                  id="descripcion"
+                  cols="30"
+                  rows="3"
+                  class="form-control"
+                  placeholder="Descripción"
+                  [(ngModel)]="formData.descripcion"
+                  required
+                ></textarea>
               </div>
 
-              <!-- Campo de servicios -->
               <div class="col-12 form-group">
                 <label for="newService">Servicios</label>
-                <input type="text" class="form-control" name="newService" id="newService" placeholder="Agregar Servicio" [(ngModel)]="newService">
-                <button type="button" (click)="addService()" class="btn btn-primary mt-2">Agregar Servicio</button>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="newService"
+                  id="newService"
+                  placeholder="Agregar Servicio"
+                  [(ngModel)]="newService"
+                >
+                <button type="button" (click)="addService()" class="btn btn-primary mt-2">
+                  Agregar Servicio
+                </button>
               </div>
 
-              <!-- Mostrar los servicios agregados -->
-              <div class="col-12">
+              <div class="col-12 mb-3" *ngIf="servicesList.length > 0">
                 <ul class="list-group">
-                  <li *ngFor="let service of servicesList" class="list-group-item">
+                  <li
+                    *ngFor="let service of servicesList; let i = index"
+                    class="list-group-item d-flex justify-content-between align-items-center"
+                  >
                     {{ service }}
+                    <button
+                      type="button"
+                      class="btn btn-danger btn-sm"
+                      (click)="removeService(i)"
+                    >
+                      Eliminar
+                    </button>
                   </li>
                 </ul>
               </div>
 
-              <!-- Campo de precio COP -->
               <div class="col-12 form-group">
                 <label for="precioCOP">Precio en Pesos Colombianos</label>
-                <input type="text" class="form-control" name="precioCOP" id="precioCOP" placeholder="Precio en Pesos Colombianos" [(ngModel)]="precioCOPDisplay" required>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="precioCOP"
+                  id="precioCOP"
+                  placeholder="Precio en Pesos Colombianos"
+                  [(ngModel)]="precioCOPDisplay"
+                  required
+                >
               </div>
 
-              <!-- Campo de precio USD -->
               <div class="col-12 form-group">
                 <label for="precioUSD">Precio en Dólares</label>
-                <input type="text" class="form-control" name="precioUSD" id="precioUSD" placeholder="Precio en Dólares" [(ngModel)]="precioUSDDisplay" required>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="precioUSD"
+                  id="precioUSD"
+                  placeholder="Precio en Dólares"
+                  [(ngModel)]="precioUSDDisplay"
+                  required
+                >
               </div>
 
-              <!-- Campo de capacidad -->
               <div class="col-12 form-group">
                 <label for="capacidad">Capacidad</label>
-                <input type="number" class="form-control" name="capacidad" id="capacidad" placeholder="Capacidad" [(ngModel)]="formData.capacidad" required>
+                <input
+                  type="number"
+                  class="form-control"
+                  name="capacidad"
+                  id="capacidad"
+                  placeholder="Capacidad"
+                  [(ngModel)]="formData.capacidad"
+                  required
+                >
               </div>
 
-              <!-- Carga de imágenes -->
               <div class="col-12 form-group">
-                <label for="image">Cargar Imágenes</label>
-                <input type="file" id="image" (change)="onImageChange($event)" accept="image/*" class="form-control" multiple>
+                <label for="image">
+                  {{ isEditMode ? 'Agregar nuevas imágenes' : 'Cargar imágenes' }}
+                </label>
+                <input
+                  type="file"
+                  id="image"
+                  (change)="onImageChange($event)"
+                  accept="image/*"
+                  class="form-control"
+                  multiple
+                >
               </div>
 
               <div class="col-12">
                 <div *ngFor="let img of imagePreviews; let i = index" class="image-preview mb-3">
                   <img [src]="img" alt="Vista previa de imagen" class="img-thumbnail" width="150">
-                  <button type="button" (click)="removeImage(i)" class="btn btn-danger btn-sm mt-2">Eliminar</button>
+                  <button
+                    type="button"
+                    (click)="removeImage(i)"
+                    class="btn btn-danger btn-sm mt-2"
+                  >
+                    Eliminar
+                  </button>
                 </div>
               </div>
 
-              <!-- Carga de video -->
               <div class="col-12 form-group">
-                <label for="video">Cargar Video</label>
-                <input type="file" id="video" (change)="onVideoChange($event)" accept="video/*" class="form-control">
+                <label for="video">
+                  {{ isEditMode ? 'Cambiar video' : 'Cargar video' }}
+                </label>
+                <input
+                  type="file"
+                  id="video"
+                  (change)="onVideoChange($event)"
+                  accept="video/*"
+                  class="form-control"
+                >
               </div>
 
               <div class="col-12" *ngIf="videoPreview">
                 <video [src]="videoPreview" controls class="img-thumbnail" width="300"></video>
-                <button type="button" (click)="removeVideo()" class="btn btn-danger btn-sm mt-2">Eliminar Video</button>
+                <button
+                  type="button"
+                  (click)="removeVideo()"
+                  class="btn btn-danger btn-sm mt-2"
+                >
+                  Eliminar Video
+                </button>
               </div>
 
-              <!-- Botón de envío -->
-              <div class="form-btn col-12 mt-4">
-                <button type="submit" class="th-btn style3">Guardar</button>
+              <div class="form-btn col-12 mt-4 d-flex gap-3 flex-wrap">
+                <button type="submit" class="th-btn style3" [disabled]="submitting || loading">
+                  {{ submitting ? 'Guardando...' : (isEditMode ? 'Actualizar' : 'Guardar') }}
+                </button>
+
+                <button
+                  type="button"
+                  class="th-btn style-border"
+                  (click)="router.navigate(['/admin/habitaciones'])"
+                >
+                  Cancelar
+                </button>
               </div>
             </div>
           </form>
+
+          <div *ngIf="loading" class="mt-4">
+            <p>Cargando información de la habitación...</p>
+          </div>
         </div>
       </div>
     </div>

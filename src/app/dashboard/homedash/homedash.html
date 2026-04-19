@@ -1,0 +1,101 @@
+<div class="admin-dashboard">
+    <section class="admin-hero" *ngIf="showDashboardContent">
+        <div class="hero-badge">Panel administrativo</div>
+
+        <div class="hero-top">
+            <div class="hero-copy">
+                <span class="hero-script">Bienvenido</span>
+                <h1>Gestión de La Nueva Molinera</h1>
+                <p>
+                    Administra habitaciones, menú de comidas y servicios desde un solo
+                    lugar, manteniendo una experiencia visual cálida y ordenada.
+                </p>
+            </div>
+
+            <div class="hero-actions">
+                <button class="logout-btn" (click)="logout()">Cerrar sesión</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats-section" *ngIf="showDashboardContent">
+        <div class="section-heading">
+            <span class="section-script">Resumen general</span>
+            <h2>Estado actual del contenido</h2>
+        </div>
+
+        <div class="stats-grid">
+            <article class="stat-card">
+                <div class="card-top">
+                    <div class="stat-icon">🛏️</div>
+                    <div class="stat-main">
+                        <span class="stat-label">Habitaciones</span>
+                        <h3>
+                            <ng-container *ngIf="!loadingHabitaciones; else loadingRooms">
+                                {{ totalHabitaciones }}
+                            </ng-container>
+                        </h3>
+                        <p>Total registradas</p>
+                    </div>
+                </div>
+
+                <div class="card-bottom">
+                    <p class="card-description">
+                        Agrega, edita o elimina habitaciones, imágenes, detalles y
+                        descripciones de hospedaje.
+                    </p>
+                    <button type="button" (click)="goToRooms()">Administrar habitaciones</button>
+                </div>
+            </article>
+
+            <ng-template #loadingRooms>
+                <span>...</span>
+            </ng-template>
+
+            <article class="stat-card">
+                <div class="card-top">
+                    <div class="stat-icon">🍽️</div>
+                    <div class="stat-main">
+                        <span class="stat-label">Menú</span>
+                        <h3>{{ totalPlatos }}</h3>
+                        <p>Platos disponibles</p>
+                    </div>
+                </div>
+
+                <div class="card-bottom">
+                    <p class="card-description">
+                        Gestiona platos, precios, imágenes y descripciones del área de
+                        restaurante.
+                    </p>
+                    <button type="button" (click)="goToMenu()">
+                        Administrar menú
+                    </button>
+                </div>
+            </article>
+
+            <article class="stat-card">
+                <div class="card-top">
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-tree"></i>
+                    </div>
+                    <div class="stat-main">
+                        <span class="stat-label">Servicios</span>
+                        <h3>{{ totalServicios }}</h3>
+                        <p>Servicios activos</p>
+                    </div>
+                </div>
+
+                <div class="card-bottom">
+                    <p class="card-description">
+                        Administra los servicios ofrecidos por la posada y mantén actualizada
+                        la experiencia que se muestra al visitante.
+                    </p>
+                    <button type="button" (click)="goToServices()">
+                        Administrar servicios
+                    </button>
+                </div>
+            </article>
+        </div>
+    </section>
+    <router-outlet></router-outlet>
+</div>

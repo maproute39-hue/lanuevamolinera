@@ -47,8 +47,11 @@
                             <ul>
                                 <li class="d-none d-md-inline-block"><a>FAQ</a></li>
                                 <li class="d-none d-md-inline-block"><a routerLink="/contact">Soporte</a></li>
-                                <li><a (click)="$event.preventDefault(); openLoginForm()"
-                                        style="cursor: pointer;">Administración<i class="fa-regular fa-user"></i></a>
+                                <li>
+                                    <a href="#" (click)="handleAdminAction($event)" style="cursor: pointer;">
+                                        {{ isAdminLogged ? 'Salir' : 'Ingresar' }}
+                                        <i class="fa-regular fa-user"></i>
+                                    </a>
                                 </li>
                             </ul>
                         </div>
@@ -107,19 +110,19 @@
 <!-- Modal de login, ahora dentro del mismo archivo -->
 <div id="login-form" class="popup-login-register">
     <!-- Login Form -->
-    <div class="modal-content tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-        <h3 class="box-title mb-30">Sign in to your account</h3>
+    <div class="modal-content tab-pane fade show" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+        <h3 class="box-title mb-30">Ingrese como administrador</h3>
         <div class="th-login-form">
-            <form class="login-form ajax-contact">
+            <form class="login-form ajax-contact" (submit)="onLogin($event)">
                 <div class="row">
-                    <div class="form-group col-12"><label>Username or email</label> <input type="text"
-                            class="form-control" name="email" id="email" required="required"></div>
-                    <div class="form-group col-12"><label>Password</label> <input type="password" class="form-control"
-                            name="pasword" id="pasword" required="required"></div>
-                    <div class="form-btn mb-20 col-12"><button class="th-btn btn-fw th-radius2">Send
-                            Message</button></div>
+                    <div class="form-group col-12"><label>Usuario</label> <input type="text" class="form-control"
+                            name="email" id="email" required="required"></div>
+                    <div class="form-group col-12"><label>Contraseña</label> <input type="password" class="form-control"
+                            name="password" id="password" required="required"></div>
+                    <div class="form-btn mb-20 col-12"><button class="th-btn btn-fw th-radius2">Ingresar</button></div>
                 </div>
-                <div id="forgot_url"><a href="my-account.html">Forgot password?</a></div>
+                <!--                 <div id="forgot_url"><a href="my-account.html">Forgot password?</a></div>
+ -->
                 <p class="form-messages mb-0 mt-3"></p>
             </form>
         </div>

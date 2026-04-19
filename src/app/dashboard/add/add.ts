@@ -1,8 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import PocketBase from 'pocketbase';
 import Swal from 'sweetalert2';
+import { Subscription } from 'rxjs';
+import { ChangeDetectorRef } from '@angular/core';
 @Component({
   selector: 'app-add',
   standalone: true,
@@ -10,138 +13,259 @@ import Swal from 'sweetalert2';
   templateUrl: './add.html',
   styleUrls: ['./add.scss'],
 })
-export class Add {
-formData = {
+export class Add implements OnInit, OnDestroy {
+  formData = {
     nombre: '',
     descripcion: '',
     servicios: '',
     precioCOP: 0,
     precioUSD: 0,
     capacidad: '',
-    img: [] as File[],  // Para manejar múltiples imágenes
-  video: null as File | null
+    img: [] as File[],
+    video: null as File | null
   };
-  imagePreviews: string[] = [];  // Para almacenar las URL de las imágenes cargadas
-  servicesList: string[] = [];  // Lista de servicios agregados
-  newService: string = '';  // Para el input de nuevo servicio
-  videoPreview: string = '';  // Vista previa del video
+
+  imagePreviews: string[] = [];
+  existingImages: string[] = [];
+  servicesList: string[] = [];
+  newService = '';
+  videoPreview = '';
+  existingVideoUrl = '';
 
   pb: PocketBase;
 
-  constructor() {
+  isEditMode = false;
+  recordId: string | null = null;
+  loading = false;
+  submitting = false;
+
+  private routeSub?: Subscription;
+
+  constructor(
+    private route: ActivatedRoute,
+    public router: Router,
+    private cdr: ChangeDetectorRef
+  ) {
     this.pb = new PocketBase('https://db.buckapi.site:8091');
   }
 
- // Función para agregar imágenes
-  onImageChange(event: any) {
+  ngOnInit(): void {
+    this.routeSub = this.route.queryParamMap.subscribe(async (params) => {
+      const id = params.get('id');
+
+      if (id) {
+        this.isEditMode = true;
+        this.recordId = id;
+        await this.loadHabitacion(id);
+      } else {
+        this.isEditMode = false;
+        this.recordId = null;
+        this.resetForm();
+      }
+    });
+  }
+
+  async loadHabitacion(id: string): Promise<void> {
+    this.loading = true;
+
+    try {
+      const record = await this.pb.collection('habitaciones_molinera').getOne(id);
+      console.log('Habitación cargada:', record);
+
+      // Ajusta estos nombres según los campos reales de PocketBase
+      this.formData.nombre = record['nombre'] || record['name'] || '';
+      this.formData.descripcion = record['descripcion'] || record['description'] || '';
+      this.formData.servicios = record['servicios'] || record['services'] || '';
+      this.formData.precioCOP = Number(record['precioCOP'] ?? record['price_cop'] ?? 0);
+      this.formData.precioUSD = Number(record['precioUSD'] ?? record['price_usd'] ?? 0);
+      this.formData.capacidad = String(record['capacidad'] ?? record['ability'] ?? '');
+
+      this.servicesList = this.formData.servicios
+        ? this.formData.servicios.split(',').map((s: string) => s.trim()).filter(Boolean)
+        : [];
+
+      this.existingImages = Array.isArray(record['img']) ? record['img'] : [];
+      this.imagePreviews = this.existingImages.map((img: string) =>
+        this.pb.files.getURL(record, img)
+      );
+
+      if (record['video']) {
+        this.existingVideoUrl = this.pb.files.getURL(record, record['video']);
+        this.videoPreview = this.existingVideoUrl;
+      } else {
+        this.existingVideoUrl = '';
+        this.videoPreview = '';
+      }
+
+      this.formData.img = [];
+      this.formData.video = null;
+    } catch (error) {
+      console.error('Error cargando habitación para editar:', error);
+      Swal.fire({
+        title: 'Error',
+        text: 'No se pudo cargar la habitación.',
+        icon: 'error',
+        confirmButtonText: 'Aceptar',
+      });
+      this.router.navigate(['/admin/habitaciones']);
+    } finally {
+      this.loading = false;
+          this.cdr.detectChanges();
+
+    }
+  }
+
+  onImageChange(event: any): void {
     const files = event.target.files;
     if (files) {
-      // Agregar las nuevas imágenes seleccionadas al array
       Array.from(files).forEach((file: any) => {
         this.formData.img.push(file);
-        const url = URL.createObjectURL(file);
-        this.imagePreviews.push(url);
+        this.imagePreviews.push(URL.createObjectURL(file));
       });
     }
   }
 
-  // Función para agregar video
-  onVideoChange(event: any) {
+  onVideoChange(event: any): void {
     const file = event.target.files[0];
     if (file) {
       this.formData.video = file;
-      if (this.videoPreview) {
+
+      if (this.videoPreview?.startsWith('blob:')) {
         URL.revokeObjectURL(this.videoPreview);
       }
+
       this.videoPreview = URL.createObjectURL(file);
     }
   }
 
-  // Función para eliminar imagen
-  removeImage(index: number) {
-    URL.revokeObjectURL(this.imagePreviews[index]); // Liberar memoria
-    this.formData.img.splice(index, 1); // Elimina la imagen del array
-    this.imagePreviews.splice(index, 1); // Elimina la vista previa
+  removeImage(index: number): void {
+    const preview = this.imagePreviews[index];
+
+    if (preview?.startsWith('blob:')) {
+      URL.revokeObjectURL(preview);
+    }
+
+    if (index < this.existingImages.length) {
+      this.existingImages.splice(index, 1);
+    } else {
+      const newFileIndex = index - this.existingImages.length;
+      this.formData.img.splice(newFileIndex, 1);
+    }
+
+    this.imagePreviews.splice(index, 1);
   }
 
-  // Función para eliminar video
-  removeVideo() {
-    if (this.videoPreview) {
+  removeVideo(): void {
+    if (this.videoPreview?.startsWith('blob:')) {
       URL.revokeObjectURL(this.videoPreview);
-      this.videoPreview = '';
-      this.formData.video = null;
     }
+
+    this.videoPreview = '';
+    this.existingVideoUrl = '';
+    this.formData.video = null;
   }
 
-  // Función para agregar servicios (se añaden a una lista)
-  addService() {
-    if (this.newService.trim()) {
-      // Verificar que no esté duplicado
-      if (!this.servicesList.includes(this.newService.trim())) {
-        this.servicesList.push(this.newService.trim());
-        this.formData.servicios = this.servicesList.join(', ');
-      }
-      // Reiniciar el input
-      this.newService = '';
+  addService(): void {
+    const cleanService = this.newService.trim();
+    if (!cleanService) return;
+
+    if (!this.servicesList.includes(cleanService)) {
+      this.servicesList.push(cleanService);
+      this.formData.servicios = this.servicesList.join(', ');
     }
+
+    this.newService = '';
   }
 
-  // Función para manejar el envío del formulario
-  async onSubmit(event: Event) {
+  removeService(index: number): void {
+    this.servicesList.splice(index, 1);
+    this.formData.servicios = this.servicesList.join(', ');
+  }
+
+  async onSubmit(event: Event): Promise<void> {
     event.preventDefault();
 
-    const formData = new FormData();
-    formData.append('name', this.formData.nombre);
-    formData.append('description', this.formData.descripcion);
-    formData.append('services', this.formData.servicios);  // Enviar servicios como texto
-    formData.append('price_cop', this.formData.precioCOP.toString());
-    formData.append('price_usd', this.formData.precioUSD.toString());
-    formData.append('ability', this.formData.capacidad.toString());
+    if (this.submitting) return;
+    this.submitting = true;
 
-    // Agregar todas las imágenes al formData
+    const payload = new FormData();
+
+    // Usa aquí también los nombres reales de tu colección
+    payload.append('name', this.formData.nombre);
+    payload.append('description', this.formData.descripcion);
+    payload.append('services', this.formData.servicios);
+    payload.append('price_cop', this.formData.precioCOP.toString());
+    payload.append('price_usd', this.formData.precioUSD.toString());
+    payload.append('ability', this.formData.capacidad.toString());
+
+    if (this.isEditMode) {
+      this.existingImages.forEach(img => payload.append('img', img));
+    }
+
     this.formData.img.forEach(img => {
-      formData.append('img', img, img.name);
+      payload.append('img', img, img.name);
     });
 
-    // Agregar el video si existe
-    if (this.formData.video) {
-      formData.append('video', this.formData.video, this.formData.video.name);
+    if (this.isEditMode) {
+      if (!this.videoPreview) {
+        payload.append('video', '');
+      } else if (this.formData.video) {
+        payload.append('video', this.formData.video, this.formData.video.name);
+      }
+    } else {
+      if (this.formData.video) {
+        payload.append('video', this.formData.video, this.formData.video.name);
+      }
     }
 
     try {
-      const record = await this.pb.collection('habitaciones_molinera').create(formData);
-      console.log('Habitación creada:', record);
+      if (this.isEditMode && this.recordId) {
+        await this.pb.collection('habitaciones_molinera').update(this.recordId, payload);
 
-      // Mostrar mensaje de éxito
-      Swal.fire({
-        title: 'Éxito',
-        text: '¡Habitación agregada exitosamente!',
-        icon: 'success',
-        confirmButtonText: 'Aceptar',
-      });
+        await Swal.fire({
+          title: 'Actualizado',
+          text: 'La habitación fue actualizada correctamente.',
+          icon: 'success',
+          confirmButtonText: 'Aceptar',
+        });
+      } else {
+        await this.pb.collection('habitaciones_molinera').create(payload);
 
-      // Resetear el formulario
-      this.resetForm();
+        await Swal.fire({
+          title: 'Éxito',
+          text: '¡Habitación agregada exitosamente!',
+          icon: 'success',
+          confirmButtonText: 'Aceptar',
+        });
+
+        this.resetForm();
+      }
+
+      this.router.navigate(['/admin/habitaciones']);
     } catch (error) {
-      console.error('Error al crear habitación:', error);
-
-      // Mostrar mensaje de error
+      console.error('Error guardando habitación:', error);
       Swal.fire({
         title: 'Error',
-        text: 'Hubo un error al agregar la habitación. Intenta de nuevo.',
+        text: this.isEditMode
+          ? 'Hubo un error al actualizar la habitación.'
+          : 'Hubo un error al agregar la habitación.',
         icon: 'error',
         confirmButtonText: 'Aceptar',
       });
+    } finally {
+      this.submitting = false;
     }
   }
 
-  // Función para resetear el formulario
-  resetForm() {
-    // Liberar URLs de vistas previas
-    this.imagePreviews.forEach(url => URL.revokeObjectURL(url));
-    if (this.videoPreview) {
+  resetForm(): void {
+    this.imagePreviews.forEach(url => {
+      if (url.startsWith('blob:')) URL.revokeObjectURL(url);
+    });
+
+    if (this.videoPreview?.startsWith('blob:')) {
       URL.revokeObjectURL(this.videoPreview);
     }
+
     this.formData = {
       nombre: '',
       descripcion: '',
@@ -150,30 +274,44 @@ formData = {
       precioUSD: 0,
       capacidad: '',
       img: [],
-      video: null,
+      video: null
     };
+
     this.servicesList = [];
     this.newService = '';
     this.imagePreviews = [];
+    this.existingImages = [];
     this.videoPreview = '';
+    this.existingVideoUrl = '';
   }
 
-  // Getters y setters para formateo de precios
   get precioCOPDisplay(): string {
-    return this.formData.precioCOP.toLocaleString('es-CO'); // Formato colombiano con puntos
+    return this.formData.precioCOP.toLocaleString('es-CO');
   }
 
   set precioCOPDisplay(value: string) {
-    const num = value.replace(/\./g, ''); // Remover puntos
+    const num = value.replace(/\./g, '');
     this.formData.precioCOP = parseFloat(num) || 0;
   }
 
   get precioUSDDisplay(): string {
-    return this.formData.precioUSD.toLocaleString('en-US'); // Formato estadounidense con comas
+    return this.formData.precioUSD.toLocaleString('en-US');
   }
 
   set precioUSDDisplay(value: string) {
-    const num = value.replace(/,/g, ''); // Remover comas si las hay
+    const num = value.replace(/,/g, '');
     this.formData.precioUSD = parseFloat(num) || 0;
+  }
+
+  ngOnDestroy(): void {
+    this.routeSub?.unsubscribe();
+
+    this.imagePreviews.forEach(url => {
+      if (url.startsWith('blob:')) URL.revokeObjectURL(url);
+    });
+
+    if (this.videoPreview?.startsWith('blob:')) {
+      URL.revokeObjectURL(this.videoPreview);
+    }
   }
 }

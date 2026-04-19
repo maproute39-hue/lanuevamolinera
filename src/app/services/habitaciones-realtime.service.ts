@@ -40,15 +40,15 @@ export class RealtimeHabitacionesService implements OnDestroy {
    * @param id ID de la inspección a eliminar
    * @returns Promesa que se resuelve cuando se completa la eliminación
    */
-  public async deleteInspection(id: string): Promise<boolean> {
-    try {
-      await this.pb.collection(this.COLLECTION).delete(id);
-      return true;
-    } catch (error) {
-      console.error('Error al eliminar la inspección:', error);
-      throw error;
-    }
+  public async deleteHabitacion(id: string): Promise<boolean> {
+  try {
+    await this.pb.collection(this.COLLECTION).delete(id);
+    return true;
+  } catch (error) {
+    console.error('Error al eliminar la habitación:', error);
+    throw error;
   }
+}
 
   constructor() {
     this.pb = new PocketBase('https://db.buckapi.site:8091');
@@ -130,18 +130,22 @@ export class RealtimeHabitacionesService implements OnDestroy {
    * Cargar lista completa de inspecciones
    */
   async loadHabitaciones(sort: string = '-created'): Promise<void> {
-    try {
-      const records = await this.pb
-        .collection(this.COLLECTION)
-        .getFullList<Habitacion>(200, { sort });
-      
-      console.log(`[RealtimeHabitacionesService] Cargadas ${records.length} inspecciones`);
-      this.habitacionesSubject.next(records);
-    } catch (error) {
-      this.handleError(error);
-      throw error;
-    }
+  this.loadingSubject.next(true);
+
+  try {
+    const records = await this.pb
+      .collection(this.COLLECTION)
+      .getFullList<Habitacion>(200, { sort });
+
+    console.log(`[RealtimeHabitacionesService] Cargadas ${records.length} habitaciones`);
+    this.habitacionesSubject.next(records);
+  } catch (error) {
+    this.handleError(error);
+    throw error;
+  } finally {
+    this.loadingSubject.next(false);
   }
+}
 
   /**
    * Obtener inspecciones con paginación

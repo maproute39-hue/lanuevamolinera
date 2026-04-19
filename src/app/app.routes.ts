@@ -5,9 +5,13 @@ import { Add } from './dashboard/add/add';
 import { Contact } from './page/contact/contact';
 import { Rooms } from './page/rooms/rooms';
 import { Services } from './page/services/services';
+import { Servicescomponent } from './dashboard/servicescomponent/servicescomponent';
+import { Menucomponent } from './dashboard/menucomponent/menucomponent';
+import { Homedash } from './dashboard/homedash/homedash';
+import { adminGuard } from './guards/admin.guard';
+import { Habitaciones } from './dashboard/rooms/rooms';
 export const routes: Routes = [
-
-    {
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'
@@ -18,7 +22,7 @@ export const routes: Routes = [
       import('./page/home/home').then(c => c.Home),
     title: 'La Nueva Molinera',
     data: {
-      description: 'La Nueva Molinera ',
+      description: 'La Nueva Molinera',
       canonical: '/',
     },
   },
@@ -26,9 +30,9 @@ export const routes: Routes = [
     path: 'room-details/:id',
     loadComponent: () =>
       import('./page/room-details/room-details').then(c => c.RoomDetails),
-    title: 'Detalle de la habitacion',
+    title: 'Detalle de la habitación',
     data: {
-      description: 'La Nueva Molinera ',
+      description: 'La Nueva Molinera',
       canonical: '/',
     },
   },
@@ -36,9 +40,9 @@ export const routes: Routes = [
     path: 'about',
     loadComponent: () =>
       import('./page/about/about').then(c => c.About),
-    title: 'Quienes Somos',
+    title: 'Quiénes Somos',
     data: {
-      description: 'La Nueva Molinera ',
+      description: 'La Nueva Molinera',
       canonical: '/',
     },
   },
@@ -48,19 +52,40 @@ export const routes: Routes = [
       import('./page/contact/contact').then(c => c.Contact),
     title: 'Contacto',
     data: {
-      description: 'La Nueva Molinera ',
+      description: 'La Nueva Molinera',
       canonical: '/',
     },
   },
+
   {
-    path: 'add',
+    path: 'admin',
     loadComponent: () =>
-      import('./dashboard/add/add').then(c => c.Add),
-    title: 'La Nueva Molinera',
-    data: {
-      description: 'La Nueva Molinera ',
-      canonical: '/',
-    },
+      import('./dashboard/homedash/homedash').then(c => c.Homedash),
+    canActivate: [adminGuard],
+    children: [
+      {
+        path: 'menu',
+        loadComponent: () =>
+          import('./dashboard/menucomponent/menucomponent').then(c => c.Menucomponent),
+      },
+      {
+        path: 'servicios',
+        loadComponent: () =>
+          import('./dashboard/servicescomponent/servicescomponent').then(c => c.Servicescomponent),
+      },
+      {
+        path: 'agregar',
+        loadComponent: () =>
+          import('./dashboard/add/add').then(c => c.Add),
+      },
+      {
+        path: 'habitaciones',
+        loadComponent: () =>
+          import('./dashboard/rooms/rooms').then(c => c.Habitaciones),
+        canActivate: [adminGuard],
+        title: 'Administrar habitaciones'
+      },
+    ]
   },
   {
     path: 'rooms',
@@ -68,7 +93,7 @@ export const routes: Routes = [
       import('./page/rooms/rooms').then(c => c.Rooms),
     title: 'Habitaciones',
     data: {
-      description: 'La Nueva Molinera ',
+      description: 'La Nueva Molinera',
       canonical: '/',
     },
   },
@@ -78,7 +103,7 @@ export const routes: Routes = [
       import('./page/services/services').then(c => c.Services),
     title: 'Servicios',
     data: {
-      description: 'La Nueva Molinera ',
+      description: 'La Nueva Molinera',
       canonical: '/',
     },
   },

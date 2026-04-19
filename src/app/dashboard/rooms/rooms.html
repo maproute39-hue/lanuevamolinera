@@ -1,0 +1,100 @@
+<div class="admin-rooms-page">
+  <section class="rooms-admin-hero">
+    <div class="hero-copy">
+      <span class="sub-title">Panel de habitaciones</span>
+      <h2 class="sec-title">Administrar habitaciones</h2>
+      <p class="sec-text">
+        Gestiona las habitaciones registradas, actualiza su información, edita
+        precios o elimina registros cuando sea necesario.
+      </p>
+    </div>
+
+    <div class="hero-actions">
+      <button class="th-btn add-btn" (click)="goToAdd()">
+        Agregar habitación
+      </button>
+    </div>
+  </section>
+
+  <section class="rooms-admin-content">
+    <div class="loading-box" *ngIf="loading">
+      <p>Cargando habitaciones...</p>
+    </div>
+
+    <div class="empty-box" *ngIf="!loading && habitaciones.length === 0">
+      <h3>No hay habitaciones registradas</h3>
+      <p>Empieza agregando una nueva habitación al sistema.</p>
+      <button class="th-btn add-btn" (click)="goToAdd()">
+        Crear habitación
+      </button>
+    </div>
+
+    <div
+      class="rooms-grid"
+      *ngIf="!loading && habitaciones.length > 0"
+    >
+      <article
+        class="room-card"
+        *ngFor="let habitacion of habitaciones; trackBy: trackByHabitacion"
+      >
+        <div class="room-image-wrap">
+          <img
+            [src]="getImageUrl(habitacion)"
+            [alt]="habitacion.name"
+            class="room-image"
+          />
+
+          <div class="room-price-badge">
+            Desde ${{ habitacion.price_cop }}
+          </div>
+        </div>
+
+        <div class="room-content">
+          <div class="room-header">
+            <h3>{{ habitacion.name }}</h3>
+            <span class="room-capacity">
+              {{ habitacion.ability }} personas
+            </span>
+          </div>
+
+          <p class="room-description">
+            {{ habitacion.description }}
+          </p>
+
+          <div class="room-meta">
+            <div class="meta-item">
+              <span class="meta-label">Servicios</span>
+              <span class="meta-value">{{ habitacion.services }}</span>
+            </div>
+          </div>
+
+          <div class="room-actions">
+            <button
+              type="button"
+              class="action-btn view-btn"
+              (click)="viewHabitacion(habitacion.id)"
+            >
+              Ver detalle
+            </button>
+
+            <button
+              type="button"
+              class="action-btn edit-btn"
+              (click)="editHabitacion(habitacion.id)"
+            >
+              Editar
+            </button>
+
+            <button
+              type="button"
+              class="action-btn delete-btn"
+              (click)="deleteHabitacion(habitacion.id, habitacion.name)"
+            >
+              Eliminar
+            </button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+</div>
