@@ -1,1 +1,70 @@
-<p>servicescomponent works!</p>
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">Administrar Servicios</h2>
+
+    <div class="d-flex gap-2 flex-wrap">
+      <button class="th-btn style3" (click)="goToAdd()">
+        <i class="fa-solid fa-plus"></i>
+        Agregar Servicio
+      </button>
+      <button class="th-btn style3" (click)="router.navigate(['/admin'])">
+        <i class="fa-solid fa-arrow-left"></i>
+        Volver al inicio
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="text-center py-5">
+    <p>Cargando servicios...</p>
+  </div>
+
+  <div *ngIf="!loading && servicios.length === 0" class="text-center py-5">
+    <p>No hay servicios registrados todavía.</p>
+  </div>
+
+  <div class="row g-4" *ngIf="!loading && servicios.length > 0">
+    <div
+      class="col-md-6 col-lg-4"
+      *ngFor="let servicio of servicios; trackBy: trackByServicio"
+    >
+      <div class="card h-100 shadow-sm border-0">
+        <img
+          [src]="getCoverUrl(servicio)"
+          class="card-img-top"
+          alt="Imagen del servicio"
+          style="height: 220px; object-fit: cover;"
+        >
+
+        <div class="card-body">
+          <h5 class="card-title">{{ servicio.name }}</h5>
+          <p class="card-text mb-2">
+            {{ servicio.short_description || servicio.description }}
+          </p>
+
+          <p class="mb-1"><strong>Categoría:</strong> {{ servicio.category || 'Sin categoría' }}</p>
+          <p class="mb-1"><strong>Precio desde:</strong> {{ servicio.price_from || 0 | number }}</p>
+          <p class="mb-1"><strong>Estado:</strong> {{ servicio.status || 'active' }}</p>
+          <p class="mb-0"><strong>Destacado:</strong> {{ servicio.featured ? 'Sí' : 'No' }}</p>
+        </div>
+
+        <div class="card-footer bg-white border-0 d-flex gap-2 flex-wrap">
+          <button
+            type="button"
+            class="btn btn-warning btn-sm"
+            (click)="editServicio(servicio.id)"
+          >
+            Editar
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-danger btn-sm"
+            (click)="deleteServicio(servicio.id, servicio.name)"
+          >
+            Eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

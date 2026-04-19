@@ -3,11 +3,15 @@
     <div class="hero-copy">
       <span class="sub-title">Panel de habitaciones</span>
       <h2 class="sec-title">Administrar habitaciones</h2>
+      <button class="th-btn add-btn" (click)="router.navigate(['/admin'])">
+        Volver al inicio
+      </button>
       <p class="sec-text">
         Gestiona las habitaciones registradas, actualiza su información, edita
         precios o elimina registros cuando sea necesario.
       </p>
     </div>
+    
 
     <div class="hero-actions">
       <button class="th-btn add-btn" (click)="goToAdd()">

@@ -80,7 +80,11 @@
                     </div>
                     <div class="stat-main">
                         <span class="stat-label">Servicios</span>
-                        <h3>{{ totalServicios }}</h3>
+                        <h3>
+                            <ng-container *ngIf="!loadingServicios; else loadingServices">
+                                {{ totalServicios }}
+                            </ng-container>
+                        </h3>
                         <p>Servicios activos</p>
                     </div>
                 </div>
@@ -95,6 +99,9 @@
                     </button>
                 </div>
             </article>
+            <ng-template #loadingServices>
+                <span>...</span>
+            </ng-template>
         </div>
     </section>
     <router-outlet></router-outlet>

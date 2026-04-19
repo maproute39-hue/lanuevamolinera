@@ -10,6 +10,7 @@ import { Menucomponent } from './dashboard/menucomponent/menucomponent';
 import { Homedash } from './dashboard/homedash/homedash';
 import { adminGuard } from './guards/admin.guard';
 import { Habitaciones } from './dashboard/rooms/rooms';
+import { AddService } from './dashboard/add-service/add-service';
 export const routes: Routes = [
   {
     path: '',
@@ -73,6 +74,12 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./dashboard/servicescomponent/servicescomponent').then(c => c.Servicescomponent),
       },
+      {
+        path: 'agregar-servicio',
+        loadComponent: () =>
+          import('./dashboard/add-service/add-service').then(c => c.AddService),
+      },
+      
       {
         path: 'agregar',
         loadComponent: () =>

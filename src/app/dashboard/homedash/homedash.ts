@@ -4,6 +4,7 @@ import { RealtimeHabitacionesService } from '../../services/habitaciones-realtim
 import { Subscription } from 'rxjs';
 import { Router, NavigationEnd, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { RealtimeServiciosService } from '../../services/servicios-realtime.service';
 @Component({
   selector: 'app-homedash',
   standalone: true,
@@ -12,45 +13,58 @@ import { filter } from 'rxjs/operators';
   styleUrl: './homedash.scss',
 })
 export class Homedash implements OnInit, OnDestroy {
-  adminName = 'Administrador';
+ adminName = 'Administrador';
   showDashboardContent = true;
 
   totalHabitaciones = 0;
-  totalPlatos = 15;
-  totalServicios = 6;
+  totalPlatos = 0;
+  totalServicios = 0;
 
   loadingHabitaciones = false;
+  loadingPlatos = false;
+  loadingServicios = false;
 
-  private sub?: Subscription;
-  private loadingSub?: Subscription;
+  private habitacionesSub?: Subscription;
+  private habitacionesLoadingSub?: Subscription;
+  private serviciosSub?: Subscription;
+  private serviciosLoadingSub?: Subscription;
+  private routerSub?: Subscription;
 
   constructor(
     private router: Router,
-    private habitacionesService: RealtimeHabitacionesService
+    private habitacionesService: RealtimeHabitacionesService,
+    private serviciosService: RealtimeServiciosService
   ) {}
 
  
-  ngOnInit(): void {
-  this.loadingSub = this.habitacionesService.isLoading$.subscribe(value => {
-    this.loadingHabitaciones = value;
-  });
-
-  this.sub = this.habitacionesService.habitaciones$.subscribe(habitaciones => {
-    this.totalHabitaciones = habitaciones.length;
-  });
-
-  this.cargarHabitaciones();
-
-  // 👇 DETECTAR RUTA ACTIVA
-  this.router.events
-    .pipe(filter(event => event instanceof NavigationEnd))
-    .subscribe(() => {
-      const url = this.router.url;
-
-      // Mostrar solo en /admin
-      this.showDashboardContent = url === '/admin';
+   ngOnInit(): void {
+    this.habitacionesLoadingSub = this.habitacionesService.isLoading$.subscribe(value => {
+      this.loadingHabitaciones = value;
     });
-}
+
+    this.habitacionesSub = this.habitacionesService.habitaciones$.subscribe(habitaciones => {
+      this.totalHabitaciones = habitaciones.length;
+    });
+
+    this.serviciosLoadingSub = this.serviciosService.isLoading$.subscribe(value => {
+      this.loadingServicios = value;
+    });
+
+    this.serviciosSub = this.serviciosService.servicios$.subscribe(servicios => {
+      this.totalServicios = servicios.length;
+    });
+
+    this.cargarHabitaciones();
+    this.cargarServicios();
+
+    this.showDashboardContent = this.router.url === '/admin';
+
+    this.routerSub = this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.showDashboardContent = this.router.url === '/admin';
+      });
+  }
 
   async cargarHabitaciones(): Promise<void> {
     try {
@@ -60,9 +74,20 @@ export class Homedash implements OnInit, OnDestroy {
     }
   }
 
+  async cargarServicios(): Promise<void> {
+    try {
+      await this.serviciosService.loadServicios();
+    } catch (error) {
+      console.error('Error cargando servicios en dashboard:', error);
+    }
+  }
+
   ngOnDestroy(): void {
-    this.sub?.unsubscribe();
-    this.loadingSub?.unsubscribe();
+    this.habitacionesSub?.unsubscribe();
+    this.habitacionesLoadingSub?.unsubscribe();
+    this.serviciosSub?.unsubscribe();
+    this.serviciosLoadingSub?.unsubscribe();
+    this.routerSub?.unsubscribe();
   }
 
   logout(): void {

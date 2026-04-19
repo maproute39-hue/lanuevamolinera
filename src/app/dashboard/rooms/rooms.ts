@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Habitacion } from '../../models/habitacion.model';
@@ -21,8 +21,9 @@ export class Habitaciones implements OnInit, OnDestroy {
   private loadingSub?: Subscription;
 
   constructor(
-    private router: Router,
-    public realtimeHabitacionesService: RealtimeHabitacionesService
+    public router: Router,
+    public realtimeHabitacionesService: RealtimeHabitacionesService,
+    private changeDetectorRef: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -32,6 +33,7 @@ export class Habitaciones implements OnInit, OnDestroy {
 
     this.habitacionesSub = this.realtimeHabitacionesService.habitaciones$.subscribe(data => {
       this.habitaciones = data;
+      this.changeDetectorRef.detectChanges();
     });
 
     this.loadHabitaciones();
