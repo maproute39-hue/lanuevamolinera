@@ -19,7 +19,9 @@ export class ServicesDetails implements OnInit, OnDestroy {
   error = false;
 
   private routeSub?: Subscription;
-
+  galleryModalOpen = false;
+galleryImages: string[] = [];
+galleryCurrentIndex = 0;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -63,9 +65,7 @@ export class ServicesDetails implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    this.routeSub?.unsubscribe();
-  }
+ 
 
   getWhatsAppLink(): string {
   const phone = '584147015219';
@@ -169,4 +169,55 @@ formatPriceForWhatsapp(value: number): string {
   goBack(): void {
     this.router.navigate(['/services']);
   }
+  openGallery(images: string[], startIndex: number = 0): void {
+  if (!images?.length) return;
+
+  this.galleryImages = images;
+  this.galleryCurrentIndex = startIndex;
+  this.galleryModalOpen = true;
+
+  if (typeof document !== 'undefined') {
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+closeGallery(): void {
+  this.galleryModalOpen = false;
+  this.galleryImages = [];
+  this.galleryCurrentIndex = 0;
+
+  if (typeof document !== 'undefined') {
+    document.body.style.overflow = '';
+  }
+}
+
+prevImage(): void {
+  if (!this.galleryImages.length) return;
+
+  this.galleryCurrentIndex =
+    this.galleryCurrentIndex === 0
+      ? this.galleryImages.length - 1
+      : this.galleryCurrentIndex - 1;
+}
+
+nextImage(): void {
+  if (!this.galleryImages.length) return;
+
+  this.galleryCurrentIndex =
+    this.galleryCurrentIndex === this.galleryImages.length - 1
+      ? 0
+      : this.galleryCurrentIndex + 1;
+}
+
+goToImage(index: number): void {
+  this.galleryCurrentIndex = index;
+}
+
+ngOnDestroy(): void {
+      this.routeSub?.unsubscribe();
+  if (typeof document !== 'undefined') {
+    document.body.style.overflow = '';
+  }
+}
+
 }

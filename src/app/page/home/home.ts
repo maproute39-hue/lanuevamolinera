@@ -34,7 +34,7 @@ export class Home implements OnInit {
   constructor(
     private loadStyle: LoadStyleService,
     private scriptLoader: ScriptLoaderService,
-    private router: Router,
+    public router: Router,
     public RealtimeHabitacionesService: RealtimeHabitacionesService,
     @Inject(PLATFORM_ID) private platformId: Object
 

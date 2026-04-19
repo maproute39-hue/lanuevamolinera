@@ -7,7 +7,7 @@ export interface Plato {
   price_cop?: number;
   price_usd?: number;
   featured?: boolean;
-  available?: boolean;
+  avalible?: boolean;
   images?: string[];
   cover_image?: string;
   video?: string;

@@ -115,15 +115,19 @@
                     </div>
 
                     <div class="destination-gallery-wrapper warm-gallery" *ngIf="getGalleryImages().length > 0">
-                        <h3 class="page-title mt-10 mb-30">Galería del servicio</h3>
+                        <h3 class="page-title mt-10 mb-30">Galería del Evento</h3>
+
                         <div class="row gy-4">
-                            <div class="col-xl-4 col-md-6" *ngFor="let image of getGalleryImages()">
+                            <div class="col-xl-4 col-md-6" *ngFor="let image of getGalleryImages(); let i = index">
                                 <div class="gallery-box style3 warm-gallery-box">
                                     <div class="gallery-img global-img">
-                                        <img [src]="image" alt="gallery image" />
-                                        <a [href]="image" class="icon-btn popup-image">
+                                        <img [src]="image" alt="gallery image" class="gallery-clickable"
+                                            (click)="openGallery(getGalleryImages(), i)" />
+
+                                        <button type="button" class="icon-btn room-gallery-zoom-btn"
+                                            (click)="openGallery(getGalleryImages(), i)">
                                             <i class="fal fa-magnifying-glass-plus"></i>
-                                        </a>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -171,14 +175,11 @@
                             </ul>
                         </div>
 
-                        <a
-  [href]="getWhatsAppLink()"
-  target="_blank"
-  rel="noopener noreferrer"
-  class="th-btn warm-btn w-100">
-  <i class="fa-brands fa-whatsapp me-2"></i>
-  Consultar por WhatsApp
-</a>
+                        <a [href]="getWhatsAppLink()" target="_blank" rel="noopener noreferrer"
+                            class="th-btn warm-btn w-100">
+                            <i class="fa-brands fa-whatsapp me-2"></i>
+                            Consultar por WhatsApp
+                        </a>
                         <p class="sidebar-note mt-3 mb-0">
                             Ideal para vivir una experiencia acogedora y auténtica en La Nueva Molinera.
                         </p>
@@ -196,4 +197,48 @@
             </div>
         </div>
     </div>
+
+    <div class="room-gallery-modal" *ngIf="galleryModalOpen" (click)="closeGallery()">
+  <div class="room-gallery-modal-dialog" (click)="$event.stopPropagation()">
+
+    <button type="button" class="gallery-close-btn" (click)="closeGallery()">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+
+    <button
+      type="button"
+      class="gallery-nav-btn prev"
+      (click)="prevImage()"
+      *ngIf="galleryImages.length > 1">
+      <i class="fa-solid fa-chevron-left"></i>
+    </button>
+
+    <div class="room-gallery-modal-image-wrap">
+      <img
+        [src]="galleryImages[galleryCurrentIndex]"
+        alt="Imagen ampliada"
+        class="room-gallery-modal-image"
+      />
+    </div>
+
+    <button
+      type="button"
+      class="gallery-nav-btn next"
+      (click)="nextImage()"
+      *ngIf="galleryImages.length > 1">
+      <i class="fa-solid fa-chevron-right"></i>
+    </button>
+
+    <div class="room-gallery-thumbs" *ngIf="galleryImages.length > 1">
+      <button
+        type="button"
+        class="room-gallery-thumb"
+        *ngFor="let image of galleryImages; let i = index"
+        [class.active]="i === galleryCurrentIndex"
+        (click)="goToImage(i)">
+        <img [src]="image" alt="Miniatura">
+      </button>
+    </div>
+  </div>
+</div>
 </section>

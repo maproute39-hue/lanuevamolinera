@@ -32,7 +32,7 @@ export class RealtimeMenuService implements OnDestroy {
       price_cop: Number(record.price_cop) || 0,
       price_usd: Number(record.price_usd) || 0,
       featured: !!record.featured,
-      available: record.available !== false,
+      avalible: record.avalible !== false,
       images: Array.isArray(record.images) ? record.images : [],
       cover_image: record.cover_image || '',
       video: record.video || '',

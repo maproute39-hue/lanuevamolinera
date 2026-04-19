@@ -1,0 +1,169 @@
+<div class="breadcumb-wrapper warm-breadcumb" data-bg-src="assets/img/bg/breadcumb-bg.jpg">
+  <div class="container">
+    <div class="breadcumb-content">
+      <h1 class="breadcumb-title">Menú de La Nueva Molinera</h1>
+      <ul class="breadcumb-menu">
+        <li><a routerLink="/home">Inicio</a></li>
+        <li>Menú</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<section class="space warm-menu-page">
+  <div class="container">
+
+    <div class="menu-hero-box restaurant-hero">
+  <div class="menu-hero-copy">
+    <span class="section-script">Sabores con identidad</span>
+    <h2>Nuestro menú</h2>
+    <p>
+      Platos preparados con sabor casero, calidez y el estilo auténtico de La Nueva Molinera.
+    </p>
+  </div>
+</div>
+
+    <div class="menu-filters" *ngIf="categories.length > 0">
+      <button
+        type="button"
+        class="menu-filter-btn"
+        *ngFor="let category of categories"
+        [class.active]="selectedCategory === category"
+        (click)="applyCategoryFilter(category)">
+        {{ categoryLabel(category) }}
+      </button>
+    </div>
+
+    <div *ngIf="loading" class="text-center py-5">
+      <h3 class="loading-title">Cargando menú...</h3>
+    </div>
+
+    <div *ngIf="error && !loading" class="text-center py-5">
+      <h3>No se pudo cargar el menú</h3>
+      <p>Intenta nuevamente en unos momentos.</p>
+    </div>
+
+    <div class="row gy-4" *ngIf="!loading && !error && filteredPlatos.length > 0">
+  <div class="col-xl-6" *ngFor="let plato of filteredPlatos">
+    <article class="restaurant-menu-card">
+      <div class="restaurant-menu-media">
+        <img
+          [src]="getCoverImage(plato)"
+          [alt]="plato.name"
+          class="restaurant-menu-image"
+          (click)="openGallery(getGalleryImages(plato), 0)"
+        >
+
+        <div class="restaurant-badges">
+          <span class="restaurant-badge featured" *ngIf="plato.featured">Recomendado</span>
+          <span class="restaurant-badge available" *ngIf="plato.avalible">Disponible</span>
+          <span class="restaurant-badge unavailable" *ngIf="!plato.avalible">No disponible</span>
+        </div>
+
+        <button
+          type="button"
+          class="icon-btn restaurant-zoom-btn"
+          (click)="openGallery(getGalleryImages(plato), 0)">
+          <i class="fal fa-magnifying-glass-plus"></i>
+        </button>
+      </div>
+
+      <div class="restaurant-menu-content">
+        <div class="restaurant-menu-topline">
+          <span class="restaurant-category">{{ categoryLabel(plato.category) }}</span>
+          <span class="restaurant-time" *ngIf="plato.preparation_time"> Tiempo de preparación:
+            {{ plato.preparation_time }} min
+          </span>
+        </div>
+
+        <div class="restaurant-title-row">
+          <h3 class="restaurant-title">{{ plato.name }}</h3>
+
+          <div class="restaurant-prices">
+            <span class="main-price" *ngIf="plato.price_usd"> USD 
+              {{ formatCurrency(plato.price_usd, 'USD') }}
+            </span>
+            <span class="secondary-price" *ngIf="plato.price_cop"> COP
+              {{ formatCurrency(plato.price_cop, 'COP') }}
+            </span>
+          </div>
+        </div>
+
+        <p class="restaurant-short" *ngIf="plato.short_description">
+          {{ plato.short_description }}
+        </p>
+
+        <p class="restaurant-description" *ngIf="plato.description">
+          {{ plato.description }}
+        </p>
+
+        <div class="restaurant-ingredients" *ngIf="getIngredientsList(plato).length > 0">
+          <span class="ingredients-label">Ingredientes:</span>
+          <span class="ingredients-text">
+            {{ getIngredientsList(plato).join(', ') }}
+          </span>
+        </div>
+
+        <div class="restaurant-tags" *ngIf="getTagsList(plato).length > 0">
+          <span class="restaurant-tag" *ngFor="let tag of getTagsList(plato)">
+            {{ tag }}
+          </span>
+        </div>
+
+        <div class="restaurant-note" *ngIf="plato.notes">
+          {{ plato.notes }}
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+
+    <div *ngIf="!loading && !error && filteredPlatos.length === 0" class="text-center py-5">
+      <h3>No hay platos en esta categoría</h3>
+    </div>
+  </div>
+
+  <div class="room-gallery-modal" *ngIf="galleryModalOpen" (click)="closeGallery()">
+    <div class="room-gallery-modal-dialog" (click)="$event.stopPropagation()">
+
+      <button type="button" class="gallery-close-btn" (click)="closeGallery()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <button
+        type="button"
+        class="gallery-nav-btn prev"
+        (click)="prevImage()"
+        *ngIf="galleryImages.length > 1">
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+
+      <div class="room-gallery-modal-image-wrap">
+        <img
+          [src]="galleryImages[galleryCurrentIndex]"
+          alt="Imagen ampliada"
+          class="room-gallery-modal-image"
+        />
+      </div>
+
+      <button
+        type="button"
+        class="gallery-nav-btn next"
+        (click)="nextImage()"
+        *ngIf="galleryImages.length > 1">
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+
+      <div class="room-gallery-thumbs" *ngIf="galleryImages.length > 1">
+        <button
+          type="button"
+          class="room-gallery-thumb"
+          *ngFor="let image of galleryImages; let i = index"
+          [class.active]="i === galleryCurrentIndex"
+          (click)="goToImage(i)">
+          <img [src]="image" alt="Miniatura">
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

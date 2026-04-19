@@ -21,7 +21,7 @@ export class AddMenu implements OnInit, OnDestroy {
     price_cop: 0,
     price_usd: 0,
     featured: false,
-    available: true,
+    avalible: true,
     images: [] as File[],
     cover_image: null as File | null,
     video: null as File | null,
@@ -100,7 +100,7 @@ export class AddMenu implements OnInit, OnDestroy {
         price_cop: Number(record['price_cop']) || 0,
         price_usd: Number(record['price_usd']) || 0,
         featured: !!record['featured'],
-        available: record['available'] !== false,
+        avalible: record['avalible'] !== false,
         images: [],
         cover_image: null,
         video: null,
@@ -234,7 +234,7 @@ export class AddMenu implements OnInit, OnDestroy {
     payload.append('price_cop', String(this.formData.price_cop));
     payload.append('price_usd', String(this.formData.price_usd));
     payload.append('featured', String(this.formData.featured));
-    payload.append('available', String(this.formData.available));
+    payload.append('avalible', String(this.formData.avalible));
     payload.append('ingredients', this.formData.ingredients);
     payload.append('tags', this.formData.tags);
     payload.append('preparation_time', String(this.formData.preparation_time));
@@ -336,7 +336,7 @@ export class AddMenu implements OnInit, OnDestroy {
       price_cop: 0,
       price_usd: 0,
       featured: false,
-      available: true,
+      avalible: true,
       images: [],
       cover_image: null,
       video: null,

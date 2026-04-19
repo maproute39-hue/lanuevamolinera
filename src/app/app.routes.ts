@@ -12,6 +12,8 @@ import { adminGuard } from './guards/admin.guard';
 import { Habitaciones } from './dashboard/rooms/rooms';
 import { AddService } from './dashboard/add-service/add-service';
 import { ServicesDetails } from './page/services-details/services-details';
+import { Gallery } from './page/gallery/gallery';
+import { Menu } from './page/menu/menu';
 export const routes: Routes = [
   {
     path: '',
@@ -125,6 +127,26 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./page/services-details/services-details').then(c => c.ServicesDetails),
     title: 'Detalle del servicio',
+    data: {
+      description: 'La Nueva Molinera',
+      canonical: '/',
+    },
+  },
+  {
+    path: 'menu',
+    loadComponent: () =>
+      import('./page/menu/menu').then(c => c.Menu),
+    title: 'Menú',
+    data: {
+      description: 'La Nueva Molinera',
+      canonical: '/',
+    },
+  },
+  {
+    path: 'gallery',
+    loadComponent: () =>
+      import('./page/gallery/gallery').then(c => c.Gallery),
+    title: 'Galeria',
     data: {
       description: 'La Nueva Molinera',
       canonical: '/',
