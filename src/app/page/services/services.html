@@ -1,1 +1,51 @@
-<p>services works!</p>
+<div class="breadcumb-wrapper" data-bg-src="assets/img/bg/breadcumb-bg.jpg">
+    <div class="container">
+        <div class="breadcumb-content">
+            <h1 class="breadcumb-title">Servicios</h1>
+            <ul class="breadcumb-menu">
+                <li><a routerLink="/home">Inicio</a></li>
+                <li>Servicios</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<section class="position-relative overflow-hidden space" id="destination-sec">
+    <div class="container">
+        <div class="row gy-4 gx-4">
+            <div class="col-xl-3 col-lg-4 col-md-6" *ngFor="let servicio of servicios$ | async">
+                <div class="destination-item th-ani">
+                    <div class="destination-item_img global-img">
+                        <img [src]="getImageUrl(servicio)" [alt]="servicio.name || 'Servicio'" />
+                    </div>
+
+                    <div class="destination-content">
+                        <h3 class="box-title">
+                            <a (click)="viewServicio(servicio.id)">
+                                {{ servicio.name }}
+                            </a>
+                        </h3>
+
+                        <p class="destination-text">
+                            {{ servicio.description || 'Servicio disponible' }}
+                        </p>
+
+                        <a [routerLink]="['/service-details', servicio.id]" class="th-btn style4 th-icon">
+  Ver Servicio
+</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="shape-mockup shape1 d-none d-xxl-block" data-bottom="17%" data-right="9%">
+        <img src="assets/img/shape/shape_1.png" alt="shape" />
+    </div>
+    <div class="shape-mockup shape2 d-none d-xl-block" data-bottom="8%" data-right="8%">
+        <img src="assets/img/shape/shape_2.png" alt="shape" />
+    </div>
+    <div class="shape-mockup shape3 d-none d-xxl-block" data-bottom="15%" data-right="4%">
+        <img src="assets/img/shape/shape_3.png" alt="shape" />
+    </div>
+</section>

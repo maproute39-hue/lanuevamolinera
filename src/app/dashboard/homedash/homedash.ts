@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { Router, NavigationEnd, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { RealtimeServiciosService } from '../../services/servicios-realtime.service';
+import { RealtimeMenuService } from '../../services/menu-realtime.service';
 @Component({
   selector: 'app-homedash',
   standalone: true,
@@ -13,7 +14,7 @@ import { RealtimeServiciosService } from '../../services/servicios-realtime.serv
   styleUrl: './homedash.scss',
 })
 export class Homedash implements OnInit, OnDestroy {
- adminName = 'Administrador';
+  adminName = 'Administrador';
   showDashboardContent = true;
 
   totalHabitaciones = 0;
@@ -29,15 +30,17 @@ export class Homedash implements OnInit, OnDestroy {
   private serviciosSub?: Subscription;
   private serviciosLoadingSub?: Subscription;
   private routerSub?: Subscription;
-
+  private platosSub?: Subscription;
+  private platosLoadingSub?: Subscription;
   constructor(
     private router: Router,
     private habitacionesService: RealtimeHabitacionesService,
-    private serviciosService: RealtimeServiciosService
-  ) {}
+    private serviciosService: RealtimeServiciosService,
+    private menuService: RealtimeMenuService
+  ) { }
 
- 
-   ngOnInit(): void {
+
+  ngOnInit(): void {
     this.habitacionesLoadingSub = this.habitacionesService.isLoading$.subscribe(value => {
       this.loadingHabitaciones = value;
     });
@@ -54,9 +57,17 @@ export class Homedash implements OnInit, OnDestroy {
       this.totalServicios = servicios.length;
     });
 
+    this.platosLoadingSub = this.menuService.isLoading$.subscribe(value => {
+      this.loadingPlatos = value;
+    });
+
+    this.platosSub = this.menuService.platos$.subscribe(platos => {
+      this.totalPlatos = platos.length;
+    });
+
     this.cargarHabitaciones();
     this.cargarServicios();
-
+    this.cargarPlatos();
     this.showDashboardContent = this.router.url === '/admin';
 
     this.routerSub = this.router.events
@@ -64,6 +75,7 @@ export class Homedash implements OnInit, OnDestroy {
       .subscribe(() => {
         this.showDashboardContent = this.router.url === '/admin';
       });
+
   }
 
   async cargarHabitaciones(): Promise<void> {
@@ -81,12 +93,21 @@ export class Homedash implements OnInit, OnDestroy {
       console.error('Error cargando servicios en dashboard:', error);
     }
   }
+  async cargarPlatos(): Promise<void> {
+    try {
+      await this.menuService.loadPlatos();
+    } catch (error) {
+      console.error('Error cargando platos en dashboard:', error);
+    }
+  }
 
   ngOnDestroy(): void {
     this.habitacionesSub?.unsubscribe();
     this.habitacionesLoadingSub?.unsubscribe();
     this.serviciosSub?.unsubscribe();
     this.serviciosLoadingSub?.unsubscribe();
+    this.platosSub?.unsubscribe();
+    this.platosLoadingSub?.unsubscribe();
     this.routerSub?.unsubscribe();
   }
 

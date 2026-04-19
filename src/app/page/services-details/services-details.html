@@ -1,0 +1,189 @@
+<div class="breadcumb-wrapper" data-bg-src="assets/img/bg/breadcumb-bg.jpg">
+  <div class="container">
+    <div class="breadcumb-content">
+      <h1 class="breadcumb-title">
+        {{ servicio?.name || 'Detalle del servicio' }}
+      </h1>
+      <ul class="breadcumb-menu">
+        <li><a routerLink="/home">Inicio</a></li>
+        <li><a routerLink="/services">Servicios</a></li>
+        <li>{{ servicio?.name || 'Detalle' }}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<section class="space">
+  <div class="container">
+
+    <div *ngIf="loading" class="text-center py-5">
+      <h3>Cargando servicio...</h3>
+    </div>
+
+    <div *ngIf="error && !loading" class="text-center py-5">
+      <h3>No se pudo cargar el servicio</h3>
+      <p>Verifica que el registro exista y que la ruta tenga un id válido.</p>
+      <button class="th-btn" (click)="goBack()">Volver a servicios</button>
+    </div>
+
+    <div class="row" *ngIf="!loading && !error && servicio">
+      <div class="col-xxl-8 col-lg-7">
+        <div class="page-single">
+          <div class="service-img">
+            <img [src]="getCoverImage()" [alt]="servicio.name || 'Servicio'" />
+          </div>
+
+          <div class="page-content d-block">
+            <div class="page-meta mt-50 mb-45">
+              <a class="page-tag" href="javascript:void(0)">
+                {{ servicio.category || 'Servicio' }}
+              </a>
+
+              <span class="ratting" *ngIf="servicio.featured">
+                <i class="fa-sharp fa-solid fa-star"></i>
+                <span>Destacado</span>
+              </span>
+            </div>
+
+            <h2 class="box-title">
+              {{ servicio.name }}
+            </h2>
+
+            <p class="box-text mb-30" *ngIf="servicio.short_description">
+              {{ servicio.short_description }}
+            </p>
+
+            <p class="box-text mb-50" *ngIf="servicio.description">
+              {{ servicio.description }}
+            </p>
+
+            <div class="service-inner-img mb-40" *ngIf="getGalleryImages().length > 0">
+              <img [src]="getGalleryImages()[0]" [alt]="servicio.name || 'Servicio'" />
+            </div>
+
+            <div *ngIf="getIncludesList().length > 0">
+              <h2 class="box-title">Incluye</h2>
+              <div class="checklist mb-40">
+                <ul>
+                  <li *ngFor="let item of getIncludesList()">
+                    {{ item }}
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div *ngIf="getNotIncludesList().length > 0">
+              <h2 class="box-title">No incluye</h2>
+              <div class="checklist mb-40">
+                <ul>
+                  <li *ngFor="let item of getNotIncludesList()">
+                    {{ item }}
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div *ngIf="servicio.notes">
+              <h2 class="box-title">Notas</h2>
+              <p class="box-text mb-40">
+                {{ servicio.notes }}
+              </p>
+            </div>
+          </div>
+
+          <div class="destination-gallery-wrapper" *ngIf="getGalleryImages().length > 0">
+            <h3 class="page-title mt-30 mb-30">Galería del servicio</h3>
+            <div class="row gy-4 gallery-row filter-active">
+              <div
+                class="col-xxl-auto filter-item"
+                *ngFor="let image of getGalleryImages()"
+              >
+                <div class="gallery-box style3">
+                  <div class="gallery-img global-img">
+                    <img [src]="image" alt="gallery image" />
+                    <a [href]="image" class="icon-btn popup-image">
+                      <i class="fal fa-magnifying-glass-plus"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="col-xxl-4 col-lg-5">
+        <aside class="sidebar-area style3">
+
+          <div class="widget tour-booking">
+            <p class="widget_subtitle">
+              Desde
+              <span class="widget_price">
+                {{ formatPrice(servicio.price_from) }}
+              </span>
+            </p>
+
+            <div class="info-list">
+              <ul>
+                <li *ngIf="servicio.duration_hours">
+                  <strong>Duración</strong>
+                  <span>{{ servicio.duration_hours }} horas</span>
+                </li>
+
+                <li *ngIf="servicio.capacity_min || servicio.capacity_max">
+                  <strong>Capacidad</strong>
+                  <span>
+                    {{ servicio.capacity_min || 0 }} - {{ servicio.capacity_max || 0 }} personas
+                  </span>
+                </li>
+
+                <li *ngIf="servicio.location_type">
+                  <strong>Ubicación</strong>
+                  <span>{{ servicio.location_type }}</span>
+                </li>
+
+                <li>
+                  <strong>Disponibilidad</strong>
+                  <span>{{ servicio.available ? 'Disponible' : 'No disponible' }}</span>
+                </li>
+
+                <li *ngIf="servicio.status">
+                  <strong>Estado</strong>
+                  <span>{{ servicio.status }}</span>
+                </li>
+
+                <li *ngIf="servicio.category">
+                  <strong>Categoría</strong>
+                  <span>{{ servicio.category }}</span>
+                </li>
+              </ul>
+            </div>
+
+            <a routerLink="/contact" class="th-btn th-icon">Consultar servicio</a>
+          </div>
+
+          <div class="widget widget_tag_cloud" *ngIf="getTagsList().length > 0">
+            <h3 class="widget_title">Etiquetas</h3>
+            <div class="tagcloud">
+              <a href="javascript:void(0)" *ngFor="let tag of getTagsList()">
+                {{ tag }}
+              </a>
+            </div>
+          </div>
+
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <div class="shape-mockup shape1 d-none d-xxl-block" data-bottom="35%" data-right="12%">
+    <img src="assets/img/shape/shape_1.png" alt="shape" />
+  </div>
+  <div class="shape-mockup shape2 d-none d-xl-block" data-bottom="31%" data-right="8%">
+    <img src="assets/img/shape/shape_2.png" alt="shape" />
+  </div>
+  <div class="shape-mockup shape3 d-none d-xxl-block" data-bottom="33%" data-right="5%">
+    <img src="assets/img/shape/shape_3.png" alt="shape" />
+  </div>
+</section>

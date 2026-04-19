@@ -57,21 +57,26 @@
                     <div class="stat-icon">🍽️</div>
                     <div class="stat-main">
                         <span class="stat-label">Menú</span>
-                        <h3>{{ totalPlatos }}</h3>
+                        <h3>
+                            <ng-container *ngIf="!loadingPlatos; else loadingPlatosTpl">
+                                {{ totalPlatos }}
+                            </ng-container>
+                        </h3>
                         <p>Platos disponibles</p>
                     </div>
                 </div>
 
                 <div class="card-bottom">
                     <p class="card-description">
-                        Gestiona platos, precios, imágenes y descripciones del área de
-                        restaurante.
+                        Gestiona platos, precios, imágenes y descripciones del área de restaurante.
                     </p>
-                    <button type="button" (click)="goToMenu()">
-                        Administrar menú
-                    </button>
+                    <button type="button" (click)="goToMenu()">Administrar menú</button>
                 </div>
             </article>
+
+            <ng-template #loadingPlatosTpl>
+                <span>...</span>
+            </ng-template>
 
             <article class="stat-card">
                 <div class="card-top">
@@ -81,7 +86,7 @@
                     <div class="stat-main">
                         <span class="stat-label">Servicios</span>
                         <h3>
-                            <ng-container *ngIf="!loadingServicios; else loadingServices">
+                            <ng-container *ngIf="!loadingServicios; else loadingServicesTpl">
                                 {{ totalServicios }}
                             </ng-container>
                         </h3>
@@ -99,7 +104,8 @@
                     </button>
                 </div>
             </article>
-            <ng-template #loadingServices>
+
+            <ng-template #loadingServicesTpl>
                 <span>...</span>
             </ng-template>
         </div>

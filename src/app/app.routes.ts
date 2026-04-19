@@ -11,6 +11,7 @@ import { Homedash } from './dashboard/homedash/homedash';
 import { adminGuard } from './guards/admin.guard';
 import { Habitaciones } from './dashboard/rooms/rooms';
 import { AddService } from './dashboard/add-service/add-service';
+import { ServicesDetails } from './page/services-details/services-details';
 export const routes: Routes = [
   {
     path: '',
@@ -79,6 +80,11 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./dashboard/add-service/add-service').then(c => c.AddService),
       },
+      {
+        path: 'agregar-plato',
+        loadComponent: () =>
+          import('./dashboard/add-menu/add-menu').then(c => c.AddMenu),
+      },
       
       {
         path: 'agregar',
@@ -109,6 +115,16 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./page/services/services').then(c => c.Services),
     title: 'Servicios',
+    data: {
+      description: 'La Nueva Molinera',
+      canonical: '/',
+    },
+  },
+  {
+    path: 'service-details/:id',
+    loadComponent: () =>
+      import('./page/services-details/services-details').then(c => c.ServicesDetails),
+    title: 'Detalle del servicio',
     data: {
       description: 'La Nueva Molinera',
       canonical: '/',

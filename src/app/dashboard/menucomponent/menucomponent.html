@@ -1,1 +1,67 @@
-<p>menucomponent works!</p>
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+    <h2 class="mb-0">Administrar Menú</h2>
+
+    <button class="th-btn style3" (click)="goToAdd()">
+      Agregar Plato
+    </button>
+    <button class="th-btn style3" (click)="router.navigate(['/admin'])">
+        <i class="fa-solid fa-arrow-left"></i>
+        Volver al inicio
+      </button>
+  </div>
+
+  <div *ngIf="loading" class="text-center py-5">
+    <p>Cargando platos...</p>
+  </div>
+
+  <div *ngIf="!loading && platos.length === 0" class="text-center py-5">
+    <p>No hay platos registrados todavía.</p>
+  </div>
+
+  <div class="row g-4" *ngIf="!loading && platos.length > 0">
+    <div
+      class="col-md-6 col-lg-4"
+      *ngFor="let plato of platos; trackBy: trackByPlato"
+    >
+      <div class="card h-100 shadow-sm border-0">
+        <img
+          [src]="getCoverUrl(plato)"
+          class="card-img-top"
+          alt="Imagen del plato"
+          style="height: 220px; object-fit: cover;"
+        >
+
+        <div class="card-body">
+          <h5 class="card-title">{{ plato.name }}</h5>
+          <p class="card-text mb-2">
+            {{ plato.short_description || plato.description }}
+          </p>
+
+          <p class="mb-1"><strong>Categoría:</strong> {{ plato.category || 'Sin categoría' }}</p>
+          <p class="mb-1"><strong>Precio COP:</strong> {{ plato.price_cop || 0 | number }}</p>
+          <p class="mb-1"><strong>Estado:</strong> {{ plato.status || 'active' }}</p>
+          <p class="mb-0"><strong>Disponible:</strong> {{ plato.available ? 'Sí' : 'No' }}</p>
+        </div>
+
+        <div class="card-footer bg-white border-0 d-flex gap-2 flex-wrap">
+          <button
+            type="button"
+            class="btn btn-warning btn-sm"
+            (click)="editPlato(plato.id)"
+          >
+            Editar
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-danger btn-sm"
+            (click)="deletePlato(plato.id, plato.name)"
+          >
+            Eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

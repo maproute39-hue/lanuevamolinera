@@ -1,0 +1,250 @@
+<div class="space-extra2-top space-extra2-bottom">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+
+        <div *ngIf="loading" class="text-center py-5">
+          <p>Cargando información del plato...</p>
+        </div>
+
+        <form *ngIf="!loading" class="contact-form style2" (submit)="onSubmit($event)">
+          <h3 class="sec-title mb-30 text-capitalize">
+            {{ isEditMode ? 'Editar Plato' : 'Agregar Plato' }}
+          </h3>
+
+          <div class="row">
+            <div class="col-md-6 form-group">
+              <label>Nombre</label>
+              <input
+                type="text"
+                class="form-control"
+                name="name"
+                [(ngModel)]="formData.name"
+                required
+              >
+            </div>
+
+            <div class="col-md-6 form-group">
+              <label>Categoría</label>
+              <select
+                class="form-control"
+                name="category"
+                [(ngModel)]="formData.category"
+              >
+                <option value="">Seleccione</option>
+                <option *ngFor="let category of categories" [value]="category">
+                  {{ category }}
+                </option>
+              </select>
+            </div>
+
+            <div class="col-12 form-group">
+              <label>Descripción corta</label>
+              <input
+                type="text"
+                class="form-control"
+                name="short_description"
+                [(ngModel)]="formData.short_description"
+              >
+            </div>
+
+            <div class="col-12 form-group">
+              <label>Descripción</label>
+              <textarea
+                class="form-control"
+                name="description"
+                rows="4"
+                [(ngModel)]="formData.description"
+                required
+              ></textarea>
+            </div>
+
+            <div class="col-md-6 form-group">
+              <label>Precio COP</label>
+              <input
+                type="number"
+                class="form-control"
+                name="price_cop"
+                [(ngModel)]="formData.price_cop"
+              >
+            </div>
+
+            <div class="col-md-6 form-group">
+              <label>Precio USD</label>
+              <input
+                type="number"
+                class="form-control"
+                name="price_usd"
+                [(ngModel)]="formData.price_usd"
+              >
+            </div>
+
+            <div class="col-12 form-group">
+              <label>Ingredientes</label>
+              <textarea
+                class="form-control"
+                name="ingredients"
+                rows="3"
+                [(ngModel)]="formData.ingredients"
+              ></textarea>
+            </div>
+
+            <div class="col-md-6 form-group">
+              <label>Tiempo de preparación (min)</label>
+              <input
+                type="number"
+                class="form-control"
+                name="preparation_time"
+                [(ngModel)]="formData.preparation_time"
+              >
+            </div>
+
+            <div class="col-md-6 form-group">
+              <label>Etiquetas</label>
+              <input
+                type="text"
+                class="form-control"
+                name="tags"
+                [(ngModel)]="formData.tags"
+                placeholder="Ej: típico, parrilla, mariscos"
+              >
+            </div>
+
+            <div class="col-md-6 form-group">
+              <label>Estado</label>
+              <select
+                class="form-control"
+                name="status"
+                [(ngModel)]="formData.status"
+              >
+                <option value="active">Activo</option>
+                <option value="inactive">Inactivo</option>
+              </select>
+            </div>
+
+            <div class="col-md-6 form-group">
+              <label>Orden</label>
+              <input
+                type="number"
+                class="form-control"
+                name="sort_order"
+                [(ngModel)]="formData.sort_order"
+              >
+            </div>
+
+            <div class="col-md-6 form-group d-flex align-items-center gap-2">
+              <input
+                type="checkbox"
+                id="featured"
+                name="featured"
+                [(ngModel)]="formData.featured"
+              >
+              <label for="featured" class="mb-0">Destacado</label>
+            </div>
+
+            <div class="col-md-6 form-group d-flex align-items-center gap-2">
+              <input
+                type="checkbox"
+                id="available"
+                name="available"
+                [(ngModel)]="formData.available"
+              >
+              <label for="available" class="mb-0">Disponible</label>
+            </div>
+
+            <div class="col-12 form-group">
+              <label>Notas</label>
+              <textarea
+                class="form-control"
+                name="notes"
+                rows="3"
+                [(ngModel)]="formData.notes"
+              ></textarea>
+            </div>
+
+            <div class="col-12 form-group">
+              <label>Imagen principal</label>
+              <input
+                type="file"
+                class="form-control"
+                accept="image/*"
+                (change)="onCoverChange($event)"
+              >
+            </div>
+
+            <div class="col-12 mb-3" *ngIf="coverPreview">
+              <img [src]="coverPreview" class="img-thumbnail" width="180" alt="Portada">
+              <div class="mt-2">
+                <button type="button" class="btn btn-danger btn-sm" (click)="removeCover()">
+                  Eliminar portada
+                </button>
+              </div>
+            </div>
+
+            <div class="col-12 form-group">
+              <label>Galería de imágenes</label>
+              <input
+                type="file"
+                class="form-control"
+                accept="image/*"
+                multiple
+                (change)="onImagesChange($event)"
+              >
+            </div>
+
+            <div class="col-12 mb-3">
+              <div class="d-flex flex-wrap gap-3">
+                <div *ngFor="let img of galleryPreviews; let i = index">
+                  <img [src]="img" class="img-thumbnail" width="150" alt="Galería">
+                  <div class="mt-2">
+                    <button
+                      type="button"
+                      class="btn btn-danger btn-sm"
+                      (click)="removeImage(i)"
+                    >
+                      Eliminar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 form-group">
+              <label>Video</label>
+              <input
+                type="file"
+                class="form-control"
+                accept="video/*"
+                (change)="onVideoChange($event)"
+              >
+            </div>
+
+            <div class="col-12 mb-3" *ngIf="videoPreview">
+              <video [src]="videoPreview" controls class="img-thumbnail" width="300"></video>
+              <div class="mt-2">
+                <button type="button" class="btn btn-danger btn-sm" (click)="removeVideo()">
+                  Eliminar video
+                </button>
+              </div>
+            </div>
+
+            <div class="form-btn col-12 mt-4 d-flex gap-3 flex-wrap">
+              <button type="submit" class="th-btn style3" [disabled]="submitting || loading">
+                {{ submitting ? 'Guardando...' : (isEditMode ? 'Actualizar' : 'Guardar') }}
+              </button>
+
+              <button
+                type="button"
+                class="th-btn style-border"
+                (click)="router.navigate(['/admin/menu'])"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
