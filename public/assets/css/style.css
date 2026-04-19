@@ -34914,9 +34914,9 @@ input.wp-block-button__link,
     border: 2px solid var(--theme-color);
     box-shadow: 0px 20px 20px rgba(204, 204, 204, 0.25);
     border-radius: 16px;
-    padding: 21px 32px;
+        padding: 20px 20px;
     z-index: 3;
-    margin-top: -55px
+    margin-top: -38px;
 }
 
 @media (max-width: 1199px) {

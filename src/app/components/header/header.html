@@ -75,9 +75,11 @@
                                 </li>
                                 <li><a routerLink="/about">Quienes Somos</a></li>
 
-                                <li class=""><a routerLink="/services">Servicios</a>
+                                <li class=""><a routerLink="/services">Eventos</a>
                                     <ul class="sub-menu">
-
+                                        <li *ngFor="let servicio of serviciosService.servicios$ | async">
+                                            <a routerLink="/service-details/{{servicio.id}}">{{servicio.name}}</a>
+                                        </li>
                                     </ul>
                                 </li>
                                 <li class="menu-item-has-children"><a routerLink="/rooms">Habitaciones</a>
@@ -88,11 +90,7 @@
                                     </ul>
                                 </li>
                                 <li><a href="#">Galeria</a></li>
-
-
-
                                 <li><a routerLink="/contact">Contacto</a></li>
-                                <li><a routerLink="/add">Agregar</a></li>
                             </ul>
                         </nav>
                     </div>

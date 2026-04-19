@@ -67,6 +67,53 @@ export class ServicesDetails implements OnInit, OnDestroy {
     this.routeSub?.unsubscribe();
   }
 
+  getWhatsAppLink(): string {
+  const phone = '584147015219';
+  const message = this.buildWhatsAppMessage();
+  return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+}
+
+buildWhatsAppMessage(): string {
+  if (!this.servicio) {
+    return 'Hola, me gustaría recibir información sobre uno de sus Eventos.';
+  }
+
+  const nombre = this.servicio.name || 'Servicio';
+  const categoria = this.servicio.category || 'No especificada';
+  const precio = this.formatPriceForWhatsapp(this.servicio.price_from);
+  const duracion = this.servicio.duration_hours
+    ? `${this.servicio.duration_hours} horas`
+    : 'No especificada';
+  const capacidad =
+    this.servicio.capacity_min || this.servicio.capacity_max
+      ? `${this.servicio.capacity_min || 0} - ${this.servicio.capacity_max || 0} personas`
+      : 'No especificada';
+  const ubicacion = this.servicio.location_type || 'No especificada';
+
+  const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
+
+  return `Hola, me interesa este Evento de La Nueva Molinera:
+
+*Servicio:* ${nombre}
+*Categoría:* ${categoria}
+*Precio desde:* ${precio}
+*Duración:* ${duracion}
+*Capacidad:* ${capacidad}
+*Ubicación:* ${ubicacion}
+
+Quisiera recibir más información sobre disponibilidad, condiciones y reserva.
+
+*Enlace:* ${currentUrl}`;
+}
+
+formatPriceForWhatsapp(value: number): string {
+  if (value === null || value === undefined) return 'Consultar';
+  return new Intl.NumberFormat('es-VE', {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0,
+  }).format(value);
+}
   getCoverImage(): string {
     if (!this.servicio) return 'assets/img/default-service.jpg';
 

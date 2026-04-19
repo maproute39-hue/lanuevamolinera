@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { RealtimeHabitacionesService } from '../../services/habitaciones-realtime.service';
+import { RealtimeServiciosService } from '../../services/servicios-realtime.service';
 
 @Component({
   selector: 'app-header',
@@ -16,7 +17,7 @@ export class Header {
   private ADMIN_PASS = '123456'; // cámbiala si quieres
   isAdminLogged = false;
 
-  constructor(private router: Router, public habitacionesService: RealtimeHabitacionesService) { }
+  constructor(private router: Router, public habitacionesService: RealtimeHabitacionesService, public serviciosService: RealtimeServiciosService) { }
   ngDoCheck(): void {
     this.isAdminLogged = localStorage.getItem('adminSession') === 'true';
   }
