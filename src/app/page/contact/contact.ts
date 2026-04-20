@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './contact.html',
   styleUrl: './contact.scss',
 })
-export class Contact {
+export class Contact implements OnInit {
 tourBooking = {
   name: '',
   email: '',
@@ -19,6 +19,9 @@ tourBooking = {
 
 readonly whatsappNumber = '584147015219';
 
+ngOnInit(): void {
+  window.scrollTo(0, 0);
+}
 sendTourWhatsapp(): void {
   if (!this.tourBooking.name || !this.tourBooking.subject) {
     return;

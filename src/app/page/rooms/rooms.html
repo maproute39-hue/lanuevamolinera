@@ -13,42 +13,93 @@
         <div class="container">
             
             <div class="row">
-                <div class="col-xxl-12 col-lg-12">
-                    <div class="tab-content" id="nav-tabContent">
-                        <div class="tab-pane fade active show" id="tab-grid" role="tabpanel"
-                            aria-labelledby="tab-destination-grid">
-                            <div class="row gy-30">
-                                <div class="col-xxl-4 col-xl-6" *ngFor="let habitacion of RealtimeHabitacionesService.habitaciones$ | async">
-                                    <div class="tour-box th-ani">
-                                        <div class="tour-box_img global-img"><img [src]="'https://db.buckapi.site:8091/api/files/habitaciones_molinera/' + habitacion.id + '/' + habitacion.img[0]" [alt]="habitacion.name"
-                                                alt="image"></div>
-                                        <div class="tour-content">
-                                            <h3 class="box-title"><a >{{ habitacion.name }}</a></h3>
-                                           
-                                            <h4 class="tour-box_price"><span class="currency">$ {{ habitacion.price_cop }}</span>/Noche</h4>
-                                            <div class="tour-action"><span><i class="fa-light fa-eye"></i></span> 
-                                                <a (click)="viewHabitacion(habitacion.id)" style="cursor: pointer"
-                                                    class="th-btn style4 th-icon">Ver Habitación</a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                               
-                            </div>
-                        </div>
-                       
-                    </div>
-                    <div class="th-pagination text-center mt-60 mb-0">
-                        <ul>
-                            <li><a class="active" href="">1</a></li>
-                            <li><a href="">2</a></li>
-                            <li><a href="">3</a></li>
-                            <li><a href="">4</a></li>
-                            <li><a class="next-page" href="">Next <img
-                                        src="assets/img/icon/arrow-right4.svg" alt=""></a></li>
-                        </ul>
-                    </div>
+  <div class="col-xxl-12 col-lg-12">
+    <div class="tab-content" id="nav-tabContent">
+      <div
+        class="tab-pane fade active show"
+        id="tab-grid"
+        role="tabpanel"
+        aria-labelledby="tab-destination-grid"
+      >
+        <div class="row gy-4">
+          <div
+            class="col-12 col-md-6 col-xl-4"
+            *ngFor="let habitacion of RealtimeHabitacionesService.habitaciones$ | async"
+          >
+            <div class="tour-box room-card th-ani">
+              <div class="tour-box_img room-card__img global-img">
+                <img
+                  [src]="'https://db.buckapi.site:8091/api/files/habitaciones_molinera/' + habitacion.id + '/' + habitacion.img[0]"
+                  [alt]="habitacion.name"
+                />
+              </div>
+
+              <div class="tour-content room-card__content">
+                <div class="room-card__top">
+                  <span class="room-card__badge">
+                    Capacidad: {{ habitacion.ability }}
+                  </span>
+
+                  <h3 class="box-title room-card__title">
+                    {{ habitacion.name }}
+                  </h3>
+
+                  <p class="room-card__description">
+                    {{ habitacion.description }}
+                  </p>
                 </div>
-              
+
+                <div class="room-card__prices">
+                  <div class="room-card__price-item">
+                    <span class="room-card__price-label">COP</span>
+                    <h4 class="tour-box_price mb-0">
+                      $ {{ habitacion.price_cop | number }}
+                      <small>/ noche</small>
+                    </h4>
+                  </div>
+
+                  <div class="room-card__price-item" *ngIf="habitacion.price_usd > 0">
+                    <span class="room-card__price-label">USD</span>
+                    <h4 class="tour-box_price mb-0">
+                      $ {{ habitacion.price_usd | number }}
+                      <small>/ noche</small>
+                    </h4>
+                  </div>
+                </div>
+
+                <div class="tour-action room-card__action">
+                  <a
+                    (click)="viewHabitacion(habitacion.id)"
+                    style="cursor: pointer"
+                    class="th-btn style4 th-icon w-100"
+                  >
+                    Ver Habitación
+                  </a>
+                </div>
+              </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- quita esta paginación si aún no es funcional -->
+    <!--
+    <div class="th-pagination text-center mt-60 mb-0">
+      <ul>
+        <li><a class="active" href="">1</a></li>
+        <li><a href="">2</a></li>
+        <li><a href="">3</a></li>
+        <li><a href="">4</a></li>
+        <li>
+          <a class="next-page" href="">
+            Next <img src="assets/img/icon/arrow-right4.svg" alt="">
+          </a>
+        </li>
+      </ul>
+    </div>
+    -->
+  </div>
+</div>
         </div>
     </section>

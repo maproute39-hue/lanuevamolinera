@@ -6,6 +6,8 @@ import { Habitacion } from '../../models/habitacion.model';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { RealtimeHabitacionesService } from '../../services/habitaciones-realtime.service';
+import { FormsModule } from '@angular/forms';
+import { RealtimeServiciosService } from '../../services/servicios-realtime.service';
 // Add these type declarations
 declare global {
   interface Window {
@@ -22,7 +24,7 @@ declare global {
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })
@@ -35,24 +37,67 @@ export class Home implements OnInit {
     private loadStyle: LoadStyleService,
     private scriptLoader: ScriptLoaderService,
     public router: Router,
-    public RealtimeHabitacionesService: RealtimeHabitacionesService,
+    public realtimeHabitacionesService: RealtimeHabitacionesService,
+    public realtimeServiciosService: RealtimeServiciosService,
     @Inject(PLATFORM_ID) private platformId: Object
-
-  ) {
-    this.habitaciones$ = this.RealtimeHabitacionesService.habitaciones$;
-    this.isBrowser = isPlatformBrowser(this.platformId);
+) {
+  this.habitaciones$ = this.realtimeHabitacionesService.habitaciones$;
+  this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
   async ngOnInit(): Promise<void> {
     await this.loadAssets();
-    this.RealtimeHabitacionesService.habitaciones$.subscribe((habitaciones) => {
+    this.realtimeHabitacionesService.habitaciones$.subscribe((habitaciones) => {
       console.log(habitaciones);
     });
      if (!this.isBrowser) return;
 
       window.scrollTo(0, 0);
   }
+form = {
+  tipo: 'habitacion' as 'habitacion' | 'evento',
+  checkin: '',
+  checkout: '',
+  personas: 1,
+  categoria: '',
+  precioMin: null as number | null,
+  precioMax: null as number | null,
+  tipoHabitacion: '',
+  comodidades: [] as string[]
+};
 
+async onSearch() {
+  try {
+    if (this.form.tipo === 'habitacion') {
+      const resultados = await this.realtimeHabitacionesService.searchHabitaciones({
+        personas: this.form.personas,
+        precioMax: this.form.precioMax,
+        tipoHabitacion: this.form.tipoHabitacion || null
+      });
+
+      this.router.navigate(['/rooms'], {
+        state: {
+          resultados,
+          filtros: { ...this.form }
+        }
+      });
+    } else {
+      const resultados = await this.realtimeServiciosService.searchServicios({
+        categoria: this.form.categoria || undefined,
+        precioMax: this.form.precioMax
+      });
+
+      this.router.navigate(['/services'], {
+        state: {
+          resultados,
+          filtros: { ...this.form }
+        }
+      });
+    }
+  } catch (error) {
+    console.error('Error en búsqueda:', error);
+  }
+}
   private async loadAssets(): Promise<void> {
     // Load CSS
     this.loadStyles();

@@ -16,7 +16,7 @@
                 <div class="img-box3">
                     <div class="img1"><img src="assets/img/normal/about_3_1.jpg" alt="About"></div>
                     <div class="img2"><img src="assets/img/normal/about_3_2.jpg" alt="About"></div>
-                    <div class="img3 movingX"><img src="assets/img/normal/about_3_3.jpg" alt="About"></div>
+                    <div class="img3 movingX"><img src="assets/img/normal/about_2_2.jpg" alt="About"></div>
                 </div>
             </div>
             <div class="col-xl-5">
@@ -24,11 +24,13 @@
                     <div class="title-area mb-20"><span class="sub-title style1">Posada La Nueva Molinera</span>
                         <h2 class="sec-title mb-20 pe-xl-5 me-xl-5 heading">Nuestra historia</h2>
                     </div>
-                    <p class="sec-text mb-30">En La Nueva Molinera, te invitamos a vivir una experiencia única de descanso y bienestar, situada en
-                    el corazón de Capacho, Táchira. Nuestra posada familiar ha sido cuidadosamente diseñada para
-                    brindarte todo lo que necesitas para desconectar del estrés cotidiano y sumergirte en un ambiente de
-                    tranquilidad. Cada rincón de nuestra posada está pensado para que puedas disfrutar de momentos
-                    inolvidables en compañía de tus seres queridos, rodeado de naturaleza y confort.</p>
+                    <p class="sec-text mb-30">En La Nueva Molinera, te invitamos a vivir una experiencia única de
+                        descanso y bienestar, situada en
+                        el corazón de Capacho, Táchira. Nuestra posada familiar ha sido cuidadosamente diseñada para
+                        brindarte todo lo que necesitas para desconectar del estrés cotidiano y sumergirte en un
+                        ambiente de
+                        tranquilidad. Cada rincón de nuestra posada está pensado para que puedas disfrutar de momentos
+                        inolvidables en compañía de tus seres queridos, rodeado de naturaleza y confort.</p>
                     <p class="sec-text mb-30">Aquí, el descanso no es solo una opción, ¡es una prioridad! Imagina
                         despertar con el canto de los pájaros, rodeado de montañas y un aire fresco que invita a la
                         relajación. Disfruta de la calidez de nuestros espacios acogedores, donde cada detalle ha sido
@@ -88,55 +90,43 @@
 </div>
 <section class="position-relative overflow-hidden space-bottom" id="destination-sec">
     <div class="container">
-        <div class="title-area text-center"><span class="sub-title">Nuestros servicios</span>
+        <div class="title-area text-center">
+            <span class="sub-title">Nuestros servicios y eventos</span>
             <h2 class="sec-title">Atención personalizada con calidad humana</h2>
         </div>
-        <div class="row gy-4 gx-4">
-            <div class="col-xl-3 col-lg-4 col-md-6">
-                <div class="destination-item th-ani">
-                    <div class="destination-item_img global-img"><img src="assets/img/destination/destination_4_1.jpg"
-                            alt="image"></div>
+
+        <div *ngIf="loadingServicios" class="text-center py-4">
+            Cargando servicios...
+        </div>
+
+        <div class="row gy-4 gx-4" *ngIf="!loadingServicios && servicios.length > 0">
+            <div class="col-xl-3 col-lg-4 col-md-6" *ngFor="let servicio of servicios; trackBy: trackByServicio">
+                <div class="destination-item th-ani h-100">
+                    <div class="destination-item_img global-img">
+                        <img [src]="getImageUrl(servicio)" [alt]="getTitulo(servicio)" />
+                    </div>
+
                     <div class="destination-content">
-                        <h3 class="box-title"><a href="service-details.html">Hospedaje y habitaciones</a></h3>
-                        <p class="destination-text">20 Listing</p><a href="contact.html"
-                            class="th-btn style4 th-icon">Reserva</a>
+                        <h3 class="box-title">
+                            <a href="javascript:void(0)">
+                                {{ getTitulo(servicio) }}
+                            </a>
+                        </h3>
+
+                        <p class="destination-text">
+                            {{ getDescripcion(servicio) }}
+                        </p>
+
+                        <a [routerLink]="['/service-details', servicio.id]" class="th-btn style4 th-icon">
+                            Ver detalles
+                        </a>
                     </div>
                 </div>
             </div>
-            <div class="col-xl-3 col-lg-4 col-md-6">
-                <div class="destination-item th-ani">
-                    <div class="destination-item_img global-img"><img src="assets/img/destination/destination_4_2.jpg"
-                            alt="image"></div>
-                    <div class="destination-content">
-                        <h3 class="box-title"><a href="service-details.html">Restaurante tradicional</a></h3>
-                        <p class="destination-text">22 Listing</p><a href="contact.html"
-                            class="th-btn style4 th-icon">Pide tu almuerzo</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-lg-4 col-md-6">
-                <div class="destination-item th-ani">
-                    <div class="destination-item_img global-img"><img src="assets/img/destination/destination_4_3.jpg"
-                            alt="image"></div>
-                    <div class="destination-content">
-                        <h3 class="box-title"><a href="service-details.html">Eventos</a></h3>
-                        <p class="destination-text">23 Listing</p><a href="contact.html"
-                            class="th-btn style4 th-icon">Reserva</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-lg-4 col-md-6">
-                <div class="destination-item th-ani">
-                    <div class="destination-item_img global-img"><img src="assets/img/destination/destination_4_4.jpg"
-                            alt="image"></div>
-                    <div class="destination-content">
-                        <h3 class="box-title"><a href="service-details.html">Full day psicina y barbacoa</a></h3>
-                        <p class="destination-text">24 Listing</p><a href="contact.html"
-                            class="th-btn style4 th-icon">Reserva</a>
-                    </div>
-                </div>
-            </div>
-            
+        </div>
+
+        <div *ngIf="!loadingServicios && servicios.length === 0" class="text-center py-4">
+            No hay servicios disponibles.
         </div>
     </div>
 </section>
@@ -151,8 +141,7 @@
             <h2 class="sec-title">Personal capacitado y amable</h2>
         </div>
         <div class="slider-area">
-            <div class="swiper th-slider teamSlider3 has-shadow" id="teamSlider3"
-                data-slider-options='{"breakpoints":{"0":{"slidesPerView":1},"576":{"slidesPerView":"1"},"768":{"slidesPerView":"2"},"992":{"slidesPerView":"3"},"1200":{"slidesPerView":"3"}}}'>
+            <div class="swiper th-slider teamSlider3 has-shadow" id="teamSlider3">
                 <div class="swiper-wrapper">
                     <div class="swiper-slide">
                         <div class="th-team team-grid">
@@ -316,15 +305,20 @@
                     </div>
                 </div>
                 <div class="slider-pagination"></div>
-            </div><button data-slider-prev="#teamSlider3" class="slider-arrow slider-prev"><img
-                    src="assets/img/icon/right-arrow2.svg" alt=""></button> <button data-slider-next="#teamSlider3"
-                class="slider-arrow slider-next"><img src="assets/img/icon/left-arrow2.svg" alt=""></button>
+            </div>
+            <button class="slider-arrow slider-prev team-prev">
+                <img src="assets/img/icon/left-arrow2.svg" alt="">
+            </button>
+
+            <button class="slider-arrow slider-next team-next">
+                <img src="assets/img/icon/right-arrow2.svg" alt="">
+            </button>
         </div>
     </div>
 </section>
 
 
-<div class="sidebar-gallery-area space">
+<!-- <div class="sidebar-gallery-area space">
     <div class="container-fluid">
         <div class="slider-area">
             <div class="swiper th-slider has-shadow"
@@ -389,4 +383,4 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->

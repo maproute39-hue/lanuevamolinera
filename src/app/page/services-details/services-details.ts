@@ -33,6 +33,7 @@ galleryCurrentIndex = 0;
       const id = params.get('id');
       this.loadServicio(id);
     });
+    window.scrollTo(0, 0);
   }
 
   async loadServicio(id: string | null): Promise<void> {

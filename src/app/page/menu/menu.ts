@@ -29,6 +29,7 @@ export class Menu implements OnInit, OnDestroy {
 
   async ngOnInit(): Promise<void> {
     await this.loadMenu();
+    window.scrollTo(0, 0);
   }
 
   ngOnDestroy(): void {

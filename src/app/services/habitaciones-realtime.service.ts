@@ -258,4 +258,32 @@ export class RealtimeHabitacionesService implements OnDestroy {
     this.eventsSubject.complete();
     this.errorSubject.complete();
   }
+  async searchHabitaciones(filters: {
+  personas?: number | null;
+  precioMax?: number | null;
+  tipoHabitacion?: string | null;
+}): Promise<Habitacion[]> {
+  const conditions: string[] = [];
+
+  if (filters.personas) {
+    conditions.push(`ability >= ${filters.personas}`);
+  }
+
+  if (filters.precioMax != null) {
+    conditions.push(`price_cop <= ${filters.precioMax}`);
+  }
+
+  if (filters.tipoHabitacion) {
+    conditions.push(`type = "${filters.tipoHabitacion}"`);
+  }
+
+  const filter = conditions.join(' && ');
+
+  const records = await this.pb.collection(this.COLLECTION).getFullList<Habitacion>(200, {
+    sort: '-created',
+    filter
+  });
+
+  return records;
+}
 }

@@ -39,6 +39,7 @@ galleryCurrentIndex = 0;
       map(params => params.get('id')),
       switchMap(id => from(this.pb.collection('habitaciones_molinera').getOne(id || '')))
     );
+    window.scrollTo(0, 0);
   }
 
   initForm(): void {

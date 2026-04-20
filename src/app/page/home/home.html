@@ -7,8 +7,11 @@
                     <div class="container">
                         <div class="hero-style6">
                             <h1 class="hero-title" data-ani="slideinup" data-ani-delay="0.2s">Posada La Nueva Molinera.
-                                </h1>
-                            <p class="hero-text" data-ani="slideinup" data-ani-delay="0.4s">Escapa del ruido y sumérgete en un paraíso de tranquilidad en La Nueva Molinera. Disfruta de una estancia cómoda y acogedora, rodeado de un entorno natural único, donde la relajación, la familia y la diversión son nuestra prioridad.
+                            </h1>
+                            <p class="hero-text" data-ani="slideinup" data-ani-delay="0.4s">Escapa del ruido y sumérgete
+                                en un paraíso de tranquilidad en La Nueva Molinera. Disfruta de una estancia cómoda y
+                                acogedora, rodeado de un entorno natural único, donde la relajación, la familia y la
+                                diversión son nuestra prioridad.
                             </p>
                             <div class="btn-group" data-ani="slideinup" data-ani-delay="0.6s"><a routerLink="/services"
                                     class="th-btn th-icon">Descanso confortable</a> <a routerLink="/rooms"
@@ -22,8 +25,12 @@
                     <div class="th-hero-bg" data-bg-src="assets/img/hero/hero_6_2.jpg"></div>
                     <div class="container">
                         <div class="hero-style6">
-                            <h1 class="hero-title" data-ani="slideinup" data-ani-delay="0.2s">Posada La Nueva Molinera.</h1>
-                            <p class="hero-text" data-ani="slideinup" data-ani-delay="0.4s">cada rincón está pensado para tu comodidad. Ya sea disfrutando de un delicioso platillo en nuestro restaurante o descansando en nuestras confortables habitaciones, tu bienestar es lo que más nos importa.
+                            <h1 class="hero-title" data-ani="slideinup" data-ani-delay="0.2s">Posada La Nueva Molinera.
+                            </h1>
+                            <p class="hero-text" data-ani="slideinup" data-ani-delay="0.4s">cada rincón está pensado
+                                para tu comodidad. Ya sea disfrutando de un delicioso platillo en nuestro restaurante o
+                                descansando en nuestras confortables habitaciones, tu bienestar es lo que más nos
+                                importa.
                             </p>
                             <div class="btn-group" data-ani="slideinup" data-ani-delay="0.6s"><a routerLink="/services"
                                     class="th-btn th-icon">Escapadas Inolvidables</a> <a routerLink="/rooms"
@@ -38,7 +45,10 @@
                     <div class="container">
                         <div class="hero-style6">
                             <h1 class="hero-title" data-ani="slideinup" data-ani-delay="0.2s">La Nueva Molinera.</h1>
-                            <p class="hero-text" data-ani="slideinup" data-ani-delay="0.4s">Déjate sorprender por la belleza de Capacho y vive aventuras familiares que quedarán grabadas en tu memoria. Con actividades para todos los gustos, desde un día de descanso junto a la piscina hasta exploraciones por los hermosos alrededores.</p>
+                            <p class="hero-text" data-ani="slideinup" data-ani-delay="0.4s">Déjate sorprender por la
+                                belleza de Capacho y vive aventuras familiares que quedarán grabadas en tu memoria. Con
+                                actividades para todos los gustos, desde un día de descanso junto a la piscina hasta
+                                exploraciones por los hermosos alrededores.</p>
                             <div class="btn-group" data-ani="slideinup" data-ani-delay="0.6s"><a routerLink="/services"
                                     class="th-btn th-icon">Relájate y Disfruta</a> <a routerLink="/rooms"
                                     class="th-btn style2 th-icon">Reserva tu habitación</a></div>
@@ -84,73 +94,105 @@
 </div>
 <div class="">
     <div class="container">
-        <form method="POST" class="booking-form style4 ajax-contact">
+        <form (ngSubmit)="onSearch()" class="booking-form style4">
+
             <div class="input-wrap style2">
                 <div class="row align-items-center justify-content-between">
+
+                    <!-- Tipo -->
                     <div class="form-group col-md-6 col-lg-auto">
-                        <div class="booking-client-box mb-sm-0 mb-3">
-                            <div class="client-thumb-group">
-                                <div class="thumb"><img src="assets/img/shape/client-img-1-1.png" alt="avater">
-                                </div>
-                                <div class="thumb"><img src="assets/img/shape/client-img-1-2.png" alt="avater">
-                                </div>
-                                <div class="thumb"><img src="assets/img/shape/client-img-1-3.png" alt="avater">
-                                </div>
-                                <div class="thumb icon"><i class="fa-light fa-plus"></i></div>
-                            </div>
-                            <h4 class="cilent-box_counter"><span class="counter-number">2</span>k+ people Booked
-                            </h4>
+                        <div class="icon"><i class="fa-light fa-hotel"></i></div>
+                        <div class="search-input">
+                            <label>Tipo</label>
+                            <select class="form-select" [(ngModel)]="form.tipo" name="tipo">
+                                <option value="habitacion">Habitaciones</option>
+                                <option value="evento">Eventos</option>
+                            </select>
                         </div>
                     </div>
-                    <div class="form-group col-md-6 col-lg-auto">
-                        <div class="icon"><i class="fa-light fa-route"></i></div>
-                        <div class="search-input"><label>Destination</label> <select name="subject" id="subject"
-                                class="form-select nice-select">
-                                <option value="Select Destination" selected="selected" disabled="disabled">Select
-                                    Destination</option>
-                                <option value="Australia">Australia</option>
-                                <option value="Dubai">Dubai</option>
-                                <option value="England">England</option>
-                                <option value="Sweden">Sweden</option>
-                                <option value="Thailand">Thailand</option>
-                                <option value="Egypt">Egypt</option>
-                                <option value="Saudi Arab">Saudi Arab</option>
-                                <option value="Switzerland">Switzerland</option>
-                                <option value="Scandinavia">Scandinavia</option>
-                                <option value="Western Europe">Western Europe</option>
-                                <option value="Indonesia">Indonesia</option>
-                                <option class="Italy">Italy</option>
-                            </select></div>
+
+                    <!-- Check-in -->
+                    <div class="form-group col-md-6 col-lg-auto"
+                        *ngIf="form.tipo === 'habitacion' || form.tipo === 'evento'">
+                        <div class="icon"><i class="fa-light fa-calendar"></i></div>
+                        <div class="search-input">
+                            <label>Check-in</label>
+                            <input type="date" [(ngModel)]="form.checkin" name="checkin" class="form-control">
+                        </div>
                     </div>
-                    <div class="form-group col-md-6 col-lg-auto">
-                        <div class="icon"><i class="fa-regular fa-person-hiking"></i></div>
-                        <div class="search-input"><label>Type</label> <select class="nice-select" name="Adventure"
-                                id="Adventure">
-                                <option value="Adventure" selected="selected" disabled="disabled">Adventure</option>
-                                <option value="Beach">Beach</option>
-                                <option value="Group Tour">Group Tour</option>
-                                <option value="Couple Tour">Couple Tour</option>
-                                <option value="Family Tour">Family Tour</option>
-                            </select></div>
+
+                    <!-- Check-out -->
+                    <div class="form-group col-md-6 col-lg-auto"
+                        *ngIf="form.tipo === 'habitacion' || form.tipo === 'evento'">
+                        <div class="icon"><i class="fa-light fa-calendar"></i></div>
+                        <div class="search-input">
+                            <label>Check-out</label>
+                            <input type="date" [(ngModel)]="form.checkout" name="checkout" class="form-control">
+                        </div>
                     </div>
-                    <div class="form-group col-md-6 col-lg-auto">
-                        <div class="icon"><i class="fa-light fa-clock"></i></div>
-                        <div class="search-input"><label>Duration</label> <select class="form-select nice-select"
-                                name="Duration" id="Duration">
-                                <option value="Normal" selected="selected" disabled="disabled">Duration</option>
-                                <option value="1">1 days</option>
-                                <option value="2">2 days</option>
-                                <option value="3">3 days</option>
-                                <option value="4">4 days</option>
-                                <option value="5">5 days</option>
-                                <option value="6">6 days</option>
-                                <option value="7">7 days</option>
-                            </select></div>
+
+                    <!-- Personas -->
+                    <div class="form-group col-md-6 col-lg-auto" *ngIf="form.tipo === 'habitacion'">
+                        <div class="icon"><i class="fa-light fa-user"></i></div>
+                        <div class="search-input">
+                            <label>Personas</label>
+                            <input type="number" [(ngModel)]="form.personas" name="personas" min="1"
+                                class="form-control">
+                        </div>
                     </div>
-                    <div class="form-btn col-md-12 col-lg-auto"><button class="th-btn style3"><img
-                                src="assets/img/icon/search.svg" alt="">Search</button></div>
+
+                    <!-- Personas para eventos -->
+                    <div class="form-group col-md-6 col-lg-auto" *ngIf="form.tipo === 'evento'">
+                        <div class="icon"><i class="fa-light fa-user"></i></div>
+                        <div class="search-input">
+                            <label>Número de invitados</label>
+                            <input type="number" [(ngModel)]="form.personas" name="personas" min="1"
+                                class="form-control">
+                        </div>
+                    </div>
+
+                    <!-- Rango de precio -->
+                    <div class="form-group col-md-6 col-lg-auto"
+                        *ngIf="form.tipo === 'habitacion' || form.tipo === 'evento'">
+                        <div class="icon"><i class="fa-light fa-dollar-sign"></i></div>
+                        <div class="search-input">
+                            <label>Precio máximo</label>
+                            <input type="number" [(ngModel)]="form.precioMax" name="precioMax" placeholder="COP"
+                                class="form-control">
+                        </div>
+                    </div>
+
+                    <!-- Tipo Evento -->
+                    <div class="form-group col-md-6 col-lg-auto" *ngIf="form.tipo === 'evento'">
+                        <div class="icon"><i class="fa-light fa-champagne-glasses"></i></div>
+                        <div class="search-input">
+                            <label>Tipo Evento</label>
+                            <select [(ngModel)]="form.categoria" name="categoria" class="form-select">
+                                <option value="">Todos</option>
+                                <option value="boda">Boda</option>
+                                <option value="cumpleaños">Cumpleaños</option>
+                                <option value="reunión">Reunión</option>
+                                <option value="evento_corporativo">Evento corporativo</option>
+                                <option value="bautizo">Bautizo</option>
+                                <option value="primera_comunion">Primera comunión</option>
+                                <option value="aniversario">Aniversario</option>
+                                <option value="graduacion">Graduación</option>
+                                <option value="conferencia">Conferencia</option>
+                                <option value="brunch">Brunch</option>
+                                <option value="cena_especial">Cena especial</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Botón -->
+                    <div class="form-btn col-md-12 col-lg-auto">
+                        <button type="submit" class="th-btn style3">
+                            <img src="assets/img/icon/search.svg" alt=""> Buscar
+                        </button>
+                    </div>
+
                 </div>
-                <p class="form-messages mb-0 mt-3"></p>
             </div>
         </form>
     </div>
@@ -287,20 +329,26 @@
             <div class="col-lg-8">
                 <div class="title-area text-center pe-xl-4 ps-xl-4"><span class="sub-title">Nuestras Habitaciones</span>
                     <h2 class="sec-title mb-20">Habitaciones</h2>
-                    <p class="sec-text">Nuestras habitaciones son un refugio de paz y comodidad, diseñadas para brindarte un descanso placentero y una experiencia inolvidable.</p>
+                    <p class="sec-text">Nuestras habitaciones son un refugio de paz y comodidad, diseñadas para
+                        brindarte un descanso placentero y una experiencia inolvidable.</p>
                 </div>
             </div>
         </div>
-        <div class="row gx-60 gy-30 mb-60 align-items-center" *ngFor="let habitacion of RealtimeHabitacionesService.habitaciones$ | async">
+        <div class="row gx-60 gy-30 mb-60 align-items-center"
+*ngFor="let habitacion of realtimeHabitacionesService.habitaciones$ | async">
             <div class="col-lg-6">
-                <div class="resort-image global-img"><img [src]="'https://db.buckapi.site:8091/api/files/habitaciones_molinera/' + habitacion.id + '/' + habitacion.img[0]" [alt]="habitacion.name"></div>
+                <div class="resort-image global-img"><img
+                        [src]="'https://db.buckapi.site:8091/api/files/habitaciones_molinera/' + habitacion.id + '/' + habitacion.img[0]"
+                        [alt]="habitacion.name"></div>
             </div>
             <div class="col-lg-6">
                 <div class="resort-content">
-                    <h3 class="box-title"><a (click)="viewHabitacion(habitacion.id)" style="cursor: pointer">{{ habitacion.name }} </a></h3>
+                    <h3 class="box-title"><a (click)="viewHabitacion(habitacion.id)" style="cursor: pointer">{{
+                            habitacion.name }} </a></h3>
 
 
-                    <h4 class="resort-price"><span class="currency">Desde ${{ habitacion.price_cop }}</span>/por noche</h4>
+                    <h4 class="resort-price"><span class="currency">Desde ${{ habitacion.price_cop }}</span>/por noche
+                    </h4>
                     <p class="resort-text">{{ habitacion.description }}</p>
                     <div class="resort-list">
                         <ul>
@@ -308,12 +356,13 @@
                             <li><span class="title">Servicio:</span>{{ habitacion.services }}</li>
                         </ul>
                     </div>
-                    <div class="resort-btn mt-40"><a (click)="viewHabitacion(habitacion.id)" style="cursor: pointer" class="th-btn style4 th-icon">Reservar</a>
+                    <div class="resort-btn mt-40"><a (click)="viewHabitacion(habitacion.id)" style="cursor: pointer"
+                            class="th-btn style4 th-icon">Reservar</a>
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <div class="resort-btn text-center mt-60"><a class="th-btn style3 th-icon">Ver todas</a></div>
     </div>
 </div>
